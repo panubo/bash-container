@@ -1,2 +1,7 @@
-# bash-container
-Common container Bash functions
+# Bash Container
+
+Common container Bash functions.
+
+## Status
+
+Work in progress.
