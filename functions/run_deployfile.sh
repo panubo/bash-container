@@ -1,6 +1,6 @@
-# LICENSE: MIT License, Copyright (c) 2017 Volt Grid Pty Ltd
 
 run_deployfile() {
+    # LICENSE: MIT License, Copyright (c) 2017 Volt Grid Pty Ltd
     # Run Deployfile commands
 	local deployfile=${1:-'Deployfile'}
 	if [ ! -e "$deployfile" ]; then return 0; fi

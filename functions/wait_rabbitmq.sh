@@ -1,3 +1,4 @@
+
 function wait_rabbitmq {
     # LICENSE: MIT License, Copyright (c) 2017 Volt Grid Pty Ltd
     # Wait for RabbitMQ to be available

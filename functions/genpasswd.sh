@@ -1,6 +1,6 @@
-# LICENSE: MIT License, Copyright (c) 2017 Volt Grid Pty Ltd
 
 function genpasswd() {
+    # LICENSE: MIT License, Copyright (c) 2017 Volt Grid Pty Ltd
     # Generate password
     local length=${1:-16}
     set +o pipefail

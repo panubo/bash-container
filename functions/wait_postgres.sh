@@ -1,6 +1,6 @@
-# LICENSE: MIT License, Copyright (c) 2017 Volt Grid Pty Ltd
 
 function wait_postgres {
+    # LICENSE: MIT License, Copyright (c) 2017 Volt Grid Pty Ltd
     # Wait for PostgreSQL to be available
     local host=${1:-'localhost'}
     local port=${2:-'5432'}

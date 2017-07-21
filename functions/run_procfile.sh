@@ -1,6 +1,6 @@
-# LICENSE: MIT License, Copyright (c) 2017 Volt Grid Pty Ltd
 
 run_procfile() {
+    # LICENSE: MIT License, Copyright (c) 2017 Volt Grid Pty Ltd
     # Run Procfile commands
 	local procfile=${1:-'Procfile'}
 	while read line || [[ -n "$line" ]]; do
