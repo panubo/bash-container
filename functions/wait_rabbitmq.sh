@@ -5,7 +5,7 @@ function wait_rabbitmq {
     local host=${1:-'localhost'}
     local port=${2:-'5672'}
     local timeout=${3:-30}
-    echo -n "Waiting to connect to RabbitMQ at ${host}:${port}"
+    echo -n "Connecting to connect to RabbitMQ at ${host}:${port}..."
     for (( i=0;; i++ )); do
         if [ ${i} -eq ${timeout} ]; then
             echo " timeout!"
