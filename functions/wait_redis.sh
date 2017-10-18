@@ -5,7 +5,7 @@ function wait_redis {
     local host=${1:-'localhost'}
     local port=${2:-'6379'}
     local timeout=${3:-30}
-    echo -n "Connecting to connect to Redis at ${host}:${port}..."
+    echo -n "Connecting to Redis at ${host}:${port}..."
     for (( i=0;; i++ )); do
         if [ ${i} -eq ${timeout} ]; then
             echo " timeout!"
