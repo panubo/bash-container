@@ -8,5 +8,8 @@ run_deployfile() {
         if [[ -z "$line" ]] || [[ "$line" == \#* ]]; then continue; fi
         (>&2 echo "Running task ${line%%:*}: ${line#*:[[:space:]]}")
         eval "${line#*:[[:space:]]}"
+        rc=$?
+        [ "$rc" != 0 ] && exit $rc
     done < "$deployfile"
+    exit 0
 }
