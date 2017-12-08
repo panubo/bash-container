@@ -1,0 +1,4 @@
+# A comment
+deploy1: echo "Command 1"
+deploy2: echo "Command 2"
+fail: false
