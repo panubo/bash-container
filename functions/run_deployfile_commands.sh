@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 run_deployfile_commands() {
     # LICENSE: MIT License, Copyright (c) 2017 Volt Grid Pty Ltd
@@ -16,5 +17,7 @@ run_deployfile_commands() {
             fi
         done < "$deployfile"
     done
-    exit 0
+    return
 }
+
+run_deployfile_commands "$@"

@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 exec_procfile() {
     # LICENSE: MIT License, Copyright (c) 2017 Volt Grid Pty Ltd
@@ -12,3 +13,5 @@ exec_procfile() {
         fi
     done < "$procfile"
 }
+
+exec_procfile "$@"

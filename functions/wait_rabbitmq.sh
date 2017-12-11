@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 function wait_rabbitmq {
     # LICENSE: MIT License, Copyright (c) 2017 Volt Grid Pty Ltd
@@ -19,3 +20,5 @@ function wait_rabbitmq {
     exec 3>&-
     exec 3<&-
 }
+
+wait_rabbitmq "$@"

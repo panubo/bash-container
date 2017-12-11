@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 function wait_mariadb {
     # LICENSE: MIT License, Copyright (c) 2017 Volt Grid Pty Ltd
@@ -19,3 +20,5 @@ function wait_mariadb {
     exec 3>&-
     exec 3<&-
 }
+
+wait_mariadb "$@"

@@ -1,9 +1,10 @@
 #!/usr/bin/env bats
 
-source ../functions/genpasswd.sh
+#source ../functions/genpasswd.sh
 
 
-@test "only first" {
-  run genpasswd
-  [ "$status" -eq 0 ]
+@test "generate password" {
+  run ./functions/genpasswd.sh
+  status="$?"
+  [ "$?" -eq 0 ]
 }

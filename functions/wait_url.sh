@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 function wait_url {
     # LICENSE: MIT License, Copyright (c) 2017 Volt Grid Pty Ltd
@@ -18,3 +19,5 @@ function wait_url {
     exec 3>&-
     exec 3<&-
 }
+
+wait_url "$@"

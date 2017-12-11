@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 function genpasswd() {
     # LICENSE: MIT License, Copyright (c) 2017 Volt Grid Pty Ltd
@@ -7,3 +8,5 @@ function genpasswd() {
     strings < /dev/urandom | LC_CTYPE=C tr -dc A-Za-z0-9_ | head -c ${length}
     set -o pipefail
 }
+
+genpasswd "$@"
