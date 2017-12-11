@@ -2,7 +2,7 @@
 
 @test "run all commands" {
   run ../functions/run_deployfile.sh Commandfile.onetwothree
-  # [ "$status" -eq 0 ]
+  [ "$status" -eq 0 ]
   [ "${lines[0]}" = 'Running task one: echo "Command 1"' ]
   [ "${lines[1]}" = 'Command 1' ]
   [ "${lines[2]}" = 'Running task two: echo "Command 2"' ]
@@ -16,4 +16,10 @@
   [ "$status" -eq 1 ]
   [ "${lines[0]}" = 'Running task fail: false' ]
   [ "${lines[1]}" = '' ]
+}
+
+@test "Command file not exist" {
+  run ../functions/run_deployfile.sh Commandfile.notexist
+  [ "$status" -eq 0 ]
+  [ "${lines[0]}" = '' ]
 }

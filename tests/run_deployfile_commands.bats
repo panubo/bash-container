@@ -29,3 +29,9 @@
   run ../functions/run_deployfile_commands.sh Commandfile fail
   [ "$status" -eq 1 ]
 }
+
+@test "Command file not exist" {
+  run ../functions/run_deployfile_commands.sh Commandfile.notexist
+  [ "$status" -eq 0 ]
+  [ "${lines[0]}" = '' ]
+}

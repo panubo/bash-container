@@ -4,8 +4,9 @@ run_deployfile_commands() {
     # LICENSE: MIT License, Copyright (c) 2017 Volt Grid Pty Ltd
     # Run specified Deployfile commands
     local deployfile=${1:-'Deployfile'}
-    shift
+    local command_run=false
     if [ ! -e "$deployfile" ]; then return 0; fi
+    shift
     for command_name in "$@"; do
         while read line || [[ -n "$line" ]]; do
             if [[ -z "$line" ]] || [[ "$line" == \#* ]]; then continue; fi
@@ -14,10 +15,11 @@ run_deployfile_commands() {
                 eval "${line#*:[[:space:]]}"
                 rc=$?
                 [ "$rc" != 0 ] && exit $rc
+                command_run=true
             fi
         done < "$deployfile"
     done
-    return
+    [ $command_run ] && exit 0 || return
 }
 
 run_deployfile_commands "$@"
