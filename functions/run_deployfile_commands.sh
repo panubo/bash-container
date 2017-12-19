@@ -19,7 +19,7 @@ run_deployfile_commands() {
             fi
         done < "$deployfile"
     done
-    [ $command_run ] && exit 0 || return
+    [ $command_run = true ] && exit 0 || return
 }
 
 run_deployfile_commands "$@"

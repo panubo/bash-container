@@ -14,7 +14,7 @@ run_deployfile() {
         [ "$rc" != 0 ] && exit $rc
         command_run=true
     done < "$deployfile"
-    [ $command_run ] && exit 0 || return
+    [ $command_run = true ] && exit 0 || return
 }
 
 run_deployfile "$@"
