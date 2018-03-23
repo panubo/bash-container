@@ -1,8 +1,19 @@
+GIT_EMAIL := $(shell git config user.email)
+
 rendered/panubo-functions.sh: rendered functions/*
 	cat functions/* > rendered/panubo-functions.sh
 
 rendered:
 	mkdir rendered
+
+rendered/panubo-functions.tar.gz: rendered/panubo-functions.sh
+	tar -C rendered/ -zcf rendered/panubo-functions.tar.gz panubo-functions.sh
+
+rendered/panubo-functions.tar.gz.asc: rendered/panubo-functions.tar.gz
+	gpg2 --default-key $(GIT_EMAIL) --output rendered/panubo-functions.tar.gz.asc --armor --detach-sig rendered/panubo-functions.tar.gz
+
+.PHONY: sign docker
+sign: rendered/panubo-functions.tar.gz.asc
 
 docker:
 	docker build -t panubo/bash-container .
