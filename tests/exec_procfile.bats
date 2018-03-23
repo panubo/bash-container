@@ -2,16 +2,22 @@
 
 source ../functions/exec_procfile.sh
 
-@test "run sucessful command" {
-  result="$(exec_procfile Commandfile deploy1)"
-  status="$?"
+@test "run successful command" {
+  run exec_procfile Commandfile deploy1
   [ "$status" -eq 0 ]
-  echo ${result} | grep -q "Executing deploy1 from Commandfile..."
+  [ "${lines[0]}" = 'Executing deploy1 from Commandfile...' ]
+  [ "${lines[1]}" = 'Command 1' ]
 }
 
 @test "run unknown command" {
-  result="$(exec_procfile Commandfile unknown-command)"
-  status="$?"
+  run exec_procfile Commandfile unknown-command
   [ "$status" -eq 0 ]
   [ "$result" == "" ]
+}
+
+@test "run non-zero exiting command" {
+  run exec_procfile Commandfile.fail fail
+  [ "$status" -ne 0 ]
+  [ "${lines[0]}" = 'Executing fail from Commandfile.fail...' ]
+  [ "${lines[1]}" = '' ]
 }
