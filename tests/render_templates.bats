@@ -4,15 +4,18 @@ source ../functions/10-common.sh
 source ../functions/render_templates.sh
 
 teardown() {
-  rm config.yaml config.yaml.bad 2>/dev/null || true
+  rm config.yaml config2.yaml config.yaml.bad 2>/dev/null || true
 }
 
-@test "render config.yaml.tmpl" {
+@test "render templates" {
   export TEST_ENV_VAR=qwerty
-  run render_templates config.yaml.tmpl
+  run render_templates config.yaml.tmpl config2.yaml.tmpl
   [ "$status" -eq 0 ]
   [ -e "config.yaml" ]
   IFS=$'\n' file=($(cat config.yaml))
+  [ "${file[0]}" == "qwerty" ]
+  [ -e "config2.yaml" ]
+  IFS=$'\n' file=($(cat config2.yaml))
   [ "${file[0]}" == "qwerty" ]
 }
 
