@@ -4,7 +4,7 @@
 render_templates() {
   command -v gomplate >/dev/null 2>&1 || error "This function requires gomplate to be installed."
 
-  for item in ${@}; do
+  for item in "${@}"; do
   	local item_dirname tempfile
   	[[ -e "${item}" ]] || error "File ${item} is missing."
   	item_dirname="$(dirname "${item}")"
