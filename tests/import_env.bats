@@ -24,5 +24,5 @@ teardown() {
 @test "import_env: error on directory instead of file" {
   mkdir env
   run import_env env
-  [ "$status" -eq 1 ]
+  [ "$status" -eq 2 ]
 }

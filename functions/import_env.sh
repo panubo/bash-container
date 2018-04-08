@@ -5,8 +5,8 @@
 # Usage: import_env ENVFILE
 import_env() {
   local file
-  [[ ! -e "${1}" ]] && error "${1} does not exist"
-  [[ ! -f "${1}" ]] && error "${1} is not a file"
+  [[ ! -e "${1}" ]] && { error "${1} does not exist"; return 1; }
+  [[ ! -f "${1}" ]] && { error "${1} is not a file"; return 2; }
   file="$(realpath "${1}")"
   # shellcheck disable=SC1090
   . "${file}"

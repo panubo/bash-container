@@ -10,7 +10,7 @@ wait_tcp() {
   for (( i=0;; i++ )); do
     if [[ ${i} -eq "${retries}" ]]; then
       echo " timeout!"
-      exit 99
+      return 99
     fi
     sleep 1
     timeout "${tcp_timeout}" bash -c "(exec 3<>/dev/tcp/${host}/${port}) &>/dev/null" && break

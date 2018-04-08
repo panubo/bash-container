@@ -1,6 +1,6 @@
 # wait_http URL [TIMEOUT] [HTTP TIMEOUT]
 wait_http() {
-  command -v curl >/dev/null 2>&1 || error "This function requires curl to be installed."
+  command -v curl >/dev/null 2>&1 || { error "This function requires curl to be installed."; return 1; }
 
   local url="${1:-'http://localhost'}"
   local timeout="${2:-30}"
@@ -9,7 +9,7 @@ wait_http() {
   for (( i=0;; i++ )); do
     if [[ "${i}" -eq "${timeout}" ]]; then
       echo " timeout!"
-      exit 99
+      return 99
     fi
     sleep 1
     (curl --max-time "${http_timeout}" "${url}") &>/dev/null && break
