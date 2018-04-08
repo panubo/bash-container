@@ -7,7 +7,7 @@ teardown() {
   rm config.yaml config2.yaml config.yaml.bad 2>/dev/null || true
 }
 
-@test "render templates" {
+@test "render_templates: render templates" {
   export TEST_ENV_VAR=qwerty
   run render_templates config.yaml.tmpl config2.yaml.tmpl
   [ "$status" -eq 0 ]
@@ -19,7 +19,7 @@ teardown() {
   [ "${file[0]}" == "qwerty" ]
 }
 
-@test "render and replace config.yaml" {
+@test "render_templates: render and replace config.yaml" {
   printf "%s\n" "{{ .Env.TEST_ENV_VAR }}" > config.yaml
   export TEST_ENV_VAR=qwerty
   run render_templates config.yaml
@@ -29,14 +29,14 @@ teardown() {
   [ "${file[0]}" == "qwerty" ]
 }
 
-@test "render fail on missing file" {
+@test "render_templates: render fail on missing file" {
   printf "%s\n" "{{ .Env.DOESNOTEXIST }}" > config.yaml.bad
   run render_templates config.yaml.nofile
   [ "$status" -ne 0 ]
   [ "${output}" == "File config.yaml.nofile is missing." ]
 }
 
-@test "render fail on bad template" {
+@test "render_templates: render fail on bad template" {
   run render_templates config.yaml.bad
   [ "$status" -ne 0 ]
 }

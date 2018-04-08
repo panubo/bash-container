@@ -1,21 +1,22 @@
 #!/usr/bin/env bats
 
+source ../functions/10-common.sh
 source ../functions/exec_procfile.sh
 
-@test "run successful command" {
+@test "exec_procfile: run successful command" {
   run exec_procfile Commandfile deploy1
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = 'Executing deploy1 from Commandfile...' ]
   [ "${lines[1]}" = 'Command 1' ]
 }
 
-@test "run unknown command" {
+@test "exec_procfile: run unknown command" {
   run exec_procfile Commandfile unknown-command
   [ "$status" -eq 0 ]
   [ "$result" == "" ]
 }
 
-@test "run non-zero exiting command" {
+@test "exec_procfile: run non-zero exiting command" {
   run exec_procfile Commandfile.fail fail
   [ "$status" -ne 0 ]
   [ "${lines[0]}" = 'Executing fail from Commandfile.fail...' ]
