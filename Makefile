@@ -21,7 +21,7 @@ docker:
 
 docker-alpine:
 	docker build -f Dockerfile.alpine -t panubo/bash-container-alpine .
-	docker run --rm -it -v $(shell pwd):/source panubo/bash-container-alpine
+	docker run --rm -it -v $(shell pwd):/src --workdir /src panubo/bash-container-alpine
 
 shellcheck: rendered/panubo-functions.sh
 	shellcheck rendered/panubo-functions.sh

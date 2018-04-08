@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/panubo/bash-container.svg?branch=master)](https://travis-ci.org/panubo/bash-container)
 [![Status](https://img.shields.io/badge/status-BETA-yellow.svg)]()
 
-Common container Bash functions.
+Common container Bash functions. All functions are tested and checked against [ShellCheck](https://github.com/koalaman/shellcheck).
 
 ## Install
 

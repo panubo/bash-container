@@ -1,6 +1,6 @@
 # Docker --env-file doesn't interpret env files the the same as bash (`. ./env`) does 
 # eg. 'VARIABLE="foo bar"' would be 'VARIABLE=foo bar' in bash but 'VARIABLE="foo bar"' with Docker
-# This function sources and env file and then exports each variable by name (avoiding issues trying to do export $(cat env))
+# This function sources and env file and then exports each variable by name (avoiding issues trying to do export $(cat env | xargs))
 # Since this is executed as a function the exports will be available to sub processes.
 # Usage: import_env ENVFILE
 import_env() {
