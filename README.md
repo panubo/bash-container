@@ -20,8 +20,8 @@ RUN set -x \
   && apt-get update \
   && apt-get install -y --no-install-recommends ca-certificates ${fetchDeps} \
   && cd /tmp \
-  && wget -nv https://github.com/panubo/bash-container/releases/download/v0.1.2/panubo-functions.tar.gz \
-  && wget -nv https://github.com/panubo/bash-container/releases/download/v0.1.2/panubo-functions.tar.gz.asc \
+  && wget -nv https://github.com/panubo/bash-container/releases/download/v0.2.1/panubo-functions.tar.gz \
+  && wget -nv https://github.com/panubo/bash-container/releases/download/v0.2.1/panubo-functions.tar.gz.asc \
   && GPG_KEYS="E51A4070A3FFBD68C65DDB9D8BECEF8DFFCC60DD" \
   && ( gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEYS" \
       || gpg --keyserver pgp.mit.edu --recv-keys "$GPG_KEYS" \
@@ -49,8 +49,8 @@ RUN set -x \
      fi \
   && apk add --no-cache ca-certificates bash coreutils ${fetchDeps} \
   && cd /tmp \
-  && wget -nv https://github.com/panubo/bash-container/releases/download/v0.1.2/panubo-functions.tar.gz \
-  && wget -nv https://github.com/panubo/bash-container/releases/download/v0.1.2/panubo-functions.tar.gz.asc \
+  && wget -nv https://github.com/panubo/bash-container/releases/download/v0.2.1/panubo-functions.tar.gz \
+  && wget -nv https://github.com/panubo/bash-container/releases/download/v0.2.1/panubo-functions.tar.gz.asc \
   && GPG_KEYS="E51A4070A3FFBD68C65DDB9D8BECEF8DFFCC60DD" \
   && ( gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEYS" \
       || gpg --keyserver pgp.mit.edu --recv-keys "$GPG_KEYS" \
