@@ -2,7 +2,7 @@
 # wait_tcp host1,host2,host3 2 80 30
 wait_tcp_multi() {
   # Wait for multiple tcp services to be available
-  command -v gtimeout >/dev/null 2>&1 || { error "This function requires timeout to be installed."; return 1; }
+  command -v timeout >/dev/null 2>&1 || { error "This function requires timeout to be installed."; return 1; }
   local hosts="${1:-'localhost'}"
   local minimum_count="${2:-'1'}"
   local port="${3:-'80'}"
@@ -14,7 +14,7 @@ wait_tcp_multi() {
     for (( i=0;; i++ )); do
       [[ ${i} -eq "${retries}" ]] && { echo " timeout!"; break; }
       sleep 1
-      gtimeout "${tcp_timeout}" bash -c "(exec 3<>/dev/tcp/${host}/${port}) &>/dev/null" && { ((success_count++)); echo " connected."; break; }
+      timeout "${tcp_timeout}" bash -c "(exec 3<>/dev/tcp/${host}/${port}) &>/dev/null" && { ((success_count++)); echo " connected."; break; }
       echo -n "."
     done
     [[ "${success_count}" -ge "${minimum_count}" ]] && { echo "Found return ${success_count} services up"; return 0; }
