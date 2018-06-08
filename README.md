@@ -7,9 +7,12 @@ Common container Bash functions. All functions are tested and checked against [S
 
 ## Install
 
+The Panubo functions require bash, curl and coreutils, this takes about 10M of space.
+
 ### Debian
 
 ```
+ENV BASHCONTAINER_VERSION=0.3.0
 RUN set -x \
   && if ! command -v wget > /dev/null; then \
       fetchDeps="${fetchDeps} wget"; \
@@ -18,10 +21,10 @@ RUN set -x \
       fetchDeps="${fetchDeps} gnupg dirmngr"; \
      fi \
   && apt-get update \
-  && apt-get install -y --no-install-recommends ca-certificates ${fetchDeps} \
+  && apt-get install -y --no-install-recommends ca-certificates curl ${fetchDeps} \
   && cd /tmp \
-  && wget -nv https://github.com/panubo/bash-container/releases/download/v0.2.1/panubo-functions.tar.gz \
-  && wget -nv https://github.com/panubo/bash-container/releases/download/v0.2.1/panubo-functions.tar.gz.asc \
+  && wget -nv https://github.com/panubo/bash-container/releases/download/v${BASHCONTAINER_VERSION}/panubo-functions.tar.gz \
+  && wget -nv https://github.com/panubo/bash-container/releases/download/v${BASHCONTAINER_VERSION}/panubo-functions.tar.gz.asc \
   && GPG_KEYS="E51A4070A3FFBD68C65DDB9D8BECEF8DFFCC60DD" \
   && ( gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEYS" \
       || gpg --keyserver pgp.mit.edu --recv-keys "$GPG_KEYS" \
@@ -37,9 +40,8 @@ RUN set -x \
 
 ### Alpine
 
-The Panubo functions require bash and coreutils, this takes about 10M of space.
-
 ```
+ENV BASHCONTAINER_VERSION=0.3.0
 RUN set -x \
   && if [ -n "$(readlink /usr/bin/wget)" ]; then \
       fetchDeps="${fetchDeps} wget"; \
@@ -47,10 +49,10 @@ RUN set -x \
   && if ! command -v gpg > /dev/null; then \
       fetchDeps="${fetchDeps} gnupg"; \
      fi \
-  && apk add --no-cache ca-certificates bash coreutils ${fetchDeps} \
+  && apk add --no-cache ca-certificates bash curl coreutils ${fetchDeps} \
   && cd /tmp \
-  && wget -nv https://github.com/panubo/bash-container/releases/download/v0.2.1/panubo-functions.tar.gz \
-  && wget -nv https://github.com/panubo/bash-container/releases/download/v0.2.1/panubo-functions.tar.gz.asc \
+  && wget -nv https://github.com/panubo/bash-container/releases/download/v${BASHCONTAINER_VERSION}/panubo-functions.tar.gz \
+  && wget -nv https://github.com/panubo/bash-container/releases/download/v${BASHCONTAINER_VERSION}/panubo-functions.tar.gz.asc \
   && GPG_KEYS="E51A4070A3FFBD68C65DDB9D8BECEF8DFFCC60DD" \
   && ( gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEYS" \
       || gpg --keyserver pgp.mit.edu --recv-keys "$GPG_KEYS" \
