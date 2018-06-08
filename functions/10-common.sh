@@ -1,3 +1,3 @@
 error() {
-  echo "Error: ${@}" >&2
+  echo "Error: ${*}" >&2
 }

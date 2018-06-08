@@ -9,7 +9,7 @@ wait_tcp_multi() {
   local retries="${4:-30}"
   local tcp_timeout="${5:-2}"
   local success_count=0
-  for host in $(echo ${hosts} | tr "," " "); do
+  for host in $(echo "${hosts}" | tr "," " "); do
     echo -n "Connecting to ${host}:${port}"
     for (( i=0;; i++ )); do
       [[ ${i} -eq "${retries}" ]] && { echo " timeout!"; break; }
