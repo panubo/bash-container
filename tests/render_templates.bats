@@ -33,7 +33,7 @@ teardown() {
   printf "%s\n" "{{ .Env.DOESNOTEXIST }}" > config.yaml.bad
   run render_templates config.yaml.nofile
   [ "$status" -ne 0 ]
-  [ "${output}" == "File config.yaml.nofile is missing." ]
+  [ "${output}" == "Error: File config.yaml.nofile is missing." ]
 }
 
 @test "render_templates: render fail on bad template" {

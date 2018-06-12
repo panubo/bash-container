@@ -2,6 +2,7 @@
 # wait_tcp localhost 80 30
 wait_tcp() {
   # Wait for tcp service to be available
+  command -v timeout >/dev/null 2>&1 || { error "This function requires timeout to be installed."; return 1; }
   local host="${1:-'localhost'}"
   local port="${2:-'80'}"
   local retries="${3:-30}"
