@@ -9,9 +9,11 @@ render_templates() {
   	[[ -e "${item}" ]] || { error "File ${item} is missing."; return 1; }
   	item_dirname="$(dirname "${item}")"
   	tempfile="$(mktemp -p "${item_dirname}" -t .tmp.XXXXXXXXXX)"
+    permissions="$(stat -c '%a' "${item}")"
 
     gomplate < "${item}" > "${tempfile}" || { rm "${tempfile}" 2>/dev/null; error "Failed to render template ${item}."; return 1; }
     mv "${tempfile}" "${item/%\.tmpl/}"
+    chmod "${permissions}" "${item/%\.tmpl/}"
     
     if [[ "${DEBUG:-false}" == 'true' ]]; then
       echo "==> ${item/%\.tmpl/} <=="

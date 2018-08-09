@@ -40,3 +40,12 @@ teardown() {
   run render_templates config.yaml.bad
   [ "$status" -ne 0 ]
 }
+
+@test "render_templates: check file permissions are the same" {
+  printf "%s\n" "{{ .Env.TEST_ENV_VAR }}" > config.yaml
+  export TEST_ENV_VAR=qwerty
+  chmod 664 config.yaml
+  run render_templates config.yaml
+  [ "$status" -eq 0 ]
+  [ "$(stat -c '%a' config.yaml )" -eq 664 ]
+}
