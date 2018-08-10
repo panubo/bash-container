@@ -12,8 +12,8 @@ The Panubo functions require bash, curl and coreutils, this takes about 10M of s
 ### Debian
 
 ```
-ENV BASHCONTAINER_VERSION=0.3.0
 RUN set -x \
+  && BASHCONTAINER_VERSION=0.4.1 \
   && if ! command -v wget > /dev/null; then \
       fetchDeps="${fetchDeps} wget"; \
      fi \
@@ -41,8 +41,8 @@ RUN set -x \
 ### Alpine
 
 ```
-ENV BASHCONTAINER_VERSION=0.3.0
 RUN set -x \
+  && BASHCONTAINER_VERSION=0.3.0 \
   && if [ -n "$(readlink /usr/bin/wget)" ]; then \
       fetchDeps="${fetchDeps} wget"; \
      fi \
