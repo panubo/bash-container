@@ -12,7 +12,7 @@ run_deployfile_commands() {
         (>&2 echo "Running task ${line%%:*}: ${line#*:[[:space:]]}")
         eval "${line#*:[[:space:]]}"
         rc="${?}"
-        [ "${rc}" != 0 ] && return "${rc}"
+        [ "${rc}" != 0 ] && exit "${rc}"
         command_run=true
       fi
     done < "${deployfile}"
