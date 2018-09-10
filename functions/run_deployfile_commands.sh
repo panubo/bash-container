@@ -1,4 +1,5 @@
 # run_deployfile_commands FILENAME COMMAND [COMMAND]...
+# run_deployfile Deployfile command1 command2
 run_deployfile_commands() {
   # Run specified Deployfile commands
   local deployfile="${1:-'Deployfile'}"
@@ -12,12 +13,11 @@ run_deployfile_commands() {
         (>&2 echo "Running task ${line%%:*}: ${line#*:[[:space:]]}")
         eval "${line#*:[[:space:]]}"
         rc="${?}"
-        [ "${rc}" != 0 ] && exit "${rc}"
+        [ "${rc}" != 0 ] && return "${rc}"
         command_run=true
       fi
     done < "${deployfile}"
   done
-  [[ "${command_run}" == "true" ]] && return
-  # return 1 if no commands were run
-  return 1
+  # return 127 if no commands were run
+  [[ "${command_run}" == "true" ]] && return 0 || return 127
 }

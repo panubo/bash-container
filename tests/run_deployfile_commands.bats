@@ -28,9 +28,14 @@ source ../functions/run_deployfile_commands.sh
   [ "${lines[3]}" = 'Command 1' ]
 }
 
-@test "run_deployfile_commands: failure error code returned" {
+@test "run_deployfile_commands: failure error code returned - command failed" {
   run run_deployfile_commands Commandfile fail
   [ "$status" -eq 1 ]
+}
+
+@test "run_deployfile_commands: failure error code returned - command not found" {
+  run run_deployfile_commands Commandfile unknown-command
+  [ "$status" -eq 127 ]
 }
 
 @test "run_deployfile_commands: Commandfile not exist" {

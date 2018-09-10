@@ -12,8 +12,14 @@ source ../functions/exec_procfile.sh
 
 @test "exec_procfile: run unknown command" {
   run exec_procfile Commandfile unknown-command
-  [ "$status" -eq 1 ]
-  [ "$result" == "" ]
+  [ "$status" -eq 127 ]
+  [ "$result" == '' ]
+}
+
+@test "exec_procfile: run unknown command empty" {
+  run exec_procfile Commandfile.empty unknown-command
+  [ "$status" -eq 127 ]
+  [ "$result" == '' ]
 }
 
 @test "exec_procfile: run non-zero exiting command" {

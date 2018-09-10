@@ -11,6 +11,6 @@ exec_procfile() {
       eval exec "${line#*:[[:space:]]}"
     fi
   done < "${procfile}"
-  # return 1 if no commands were run
-  return 1
+  # return 127 if no command was exec'd
+  return 127
 }

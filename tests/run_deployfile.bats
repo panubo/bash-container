@@ -21,6 +21,11 @@ source ../functions/run_deployfile.sh
   [ "${lines[1]}" = '' ]
 }
 
+@test "run_deployfile_commands: command not found" {
+  run run_deployfile Commandfile.empty
+  [ "$status" -eq 127 ]
+}
+
 @test "run_deployfile: Commandfile not exist" {
   run run_deployfile Commandfile.notexist
   [ "$status" -eq 0 ]
