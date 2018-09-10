@@ -12,7 +12,7 @@ source ../functions/exec_procfile.sh
 
 @test "exec_procfile: run unknown command" {
   run exec_procfile Commandfile unknown-command
-  [ "$status" -eq 0 ]
+  [ "$status" -eq 1 ]
   [ "$result" == "" ]
 }
 
