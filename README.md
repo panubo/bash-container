@@ -13,7 +13,7 @@ The Panubo functions require bash, curl and coreutils, this takes about 10M of s
 
 ```
 RUN set -x \
-  && BASHCONTAINER_VERSION=0.4.1 \
+  && BASHCONTAINER_VERSION=0.5.0 \
   && if ! command -v wget > /dev/null; then \
       fetchDeps="${fetchDeps} wget"; \
      fi \
@@ -42,7 +42,7 @@ RUN set -x \
 
 ```
 RUN set -x \
-  && BASHCONTAINER_VERSION=0.3.0 \
+  && BASHCONTAINER_VERSION=0.5.0 \
   && if [ -n "$(readlink /usr/bin/wget)" ]; then \
       fetchDeps="${fetchDeps} wget"; \
      fi \
