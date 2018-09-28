@@ -2,9 +2,6 @@ language: bash
 
 install:
 
-  # Install tzdata to test set_timezone function
-  - sudo apt-get --yes install tzdata
-
   # Install a custom version of shellcheck instead of Travis CI's default
   - scversion="stable" # or "v0.4.7", or "latest"
   - wget "https://storage.googleapis.com/shellcheck/shellcheck-$scversion.linux.x86_64.tar.xz"
@@ -20,6 +17,7 @@ install:
   - gomplate --version
 
 script:
+    - export BATS_SUDO=true
     - make
     - ./test.sh
     - shellcheck rendered/panubo-functions.sh
