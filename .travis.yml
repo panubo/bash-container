@@ -24,3 +24,7 @@ script:
     - make
     - ./test.sh
     - shellcheck rendered/panubo-functions.sh
+    - env
+    - cd tests
+    - ./_test.sh set_timezone Australia/Sydney
+    - ls -l /usr/share/zoneinfo
