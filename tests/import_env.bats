@@ -26,3 +26,9 @@ teardown() {
   run import_env env
   [ "$status" -eq 2 ]
 }
+
+@test "import_env: error on bad environment definition" {
+  echo "VARIABLE = 'value'" > env
+  run import_env env
+  [ "$status" -ne 0 ]
+}
