@@ -17,7 +17,7 @@ sign: rendered/panubo-functions.tar.gz.asc
 
 run-docker:
 	docker build -t panubo/bash-container .
-	docker run --rm -it -v $(shell pwd):/src --workdir /src panubo/bash-container
+	docker run --rm -it -v $(shell pwd):/src --workdir /src --user user panubo/bash-container
 
 test-docker-alpine:
 	docker build -f Dockerfile.alpine -t panubo/bash-container-alpine .

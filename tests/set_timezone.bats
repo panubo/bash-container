@@ -1,5 +1,7 @@
 #!/usr/bin/env bats
 
+export BATS_SUDO=true
+
 @test "set_timezone: set timezone Australia/Sydney" {
   run ./_test.sh set_timezone Australia/Sydney
   [ "$status" -eq 0 ]

@@ -16,15 +16,7 @@ install:
   - sudo cp gomplate_linux-amd64-slim /usr/local/bin/gomplate
   - gomplate --version
 
-env:
-  global:
-    - BATS_SUDO=true
-
 script:
     - make
     - ./test.sh
     - shellcheck rendered/panubo-functions.sh
-    - env
-    - cd tests
-    - ./_test.sh set_timezone Australia/Sydney
-    - ls -l /usr/share/zoneinfo

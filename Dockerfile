@@ -4,7 +4,9 @@ FROM docker.io/debian:stretch-slim
 
 RUN set -x \
   && apt-get update \
-  && apt-get install -y --no-install-recommends curl ca-certificates git wget procps xz-utils make \
+  && apt-get install -y --no-install-recommends curl ca-certificates git wget procps xz-utils make sudo \
+  && useradd -m -s /bin/bash -G sudo user \
+  && sed -i 's/^%sudo.*/%sudo ALL=(ALL:ALL) NOPASSWD:ALL/' /etc/sudoers \
   ;
 
 # Install ShellCheck (Installing a newer version than is avaliable via apt-get)
