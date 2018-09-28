@@ -1,10 +1,10 @@
 #!/usr/bin/env bats
 
 source ../functions/10-common.sh
-source ../functions/run_deployfile.sh
+source ../functions/run_deployfile_strict.sh
 
-@test "run_deployfile: run all commands" {
-  run run_deployfile Commandfile.onetwothree
+@test "run_deployfile_strict: run all commands" {
+  run run_deployfile_strict Commandfile.onetwothree
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = 'Running task one: echo "Command 1"' ]
   [ "${lines[1]}" = 'Command 1' ]
@@ -14,20 +14,20 @@ source ../functions/run_deployfile.sh
   [ "${lines[5]}" = 'Command 3' ]
 }
 
-@test "run_deployfile: run fail command" {
-  run run_deployfile Commandfile.fail
+@test "run_deployfile_strict: run fail command" {
+  run run_deployfile_strict Commandfile.fail
   [ "$status" -eq 1 ]
   [ "${lines[0]}" = 'Running task fail: false' ]
   [ "${lines[1]}" = '' ]
 }
 
-@test "run_deployfile: command not found" {
-  run run_deployfile Commandfile.empty
-  [ "$status" -eq 0 ]
+@test "run_deployfile_strict: command not found" {
+  run run_deployfile_strict Commandfile.empty
+  [ "$status" -eq 127 ]
 }
 
-@test "run_deployfile: Commandfile not exist" {
-  run run_deployfile Commandfile.notexist
-  [ "$status" -eq 0 ]
+@test "run_deployfile_strict: Commandfile not exist" {
+  run run_deployfile_strict Commandfile.notexist
+  [ "$status" -eq 2 ]
   [ "${lines[0]}" = '' ]
 }
