@@ -1,10 +1,12 @@
-FROM docker.io/debian:stretch-slim
+# Using ubuntu:trusty because travis-ci default to ubuntu:trust
+FROM docker.io/ubuntu:trusty
+#FROM docker.io/debian:stretch-slim
 
 # This Dockerfile is intended for testing and development of panubo-functions.sh and is not for distribution of panubo-functions.sh
 
 RUN set -x \
   && apt-get update \
-  && apt-get install -y --no-install-recommends curl ca-certificates git wget procps xz-utils make sudo \
+  && apt-get install -y --no-install-recommends curl ca-certificates git wget procps xz-utils make sudo realpath \
   && useradd -m -s /bin/bash -G sudo user \
   && sed -i 's/^%sudo.*/%sudo ALL=(ALL:ALL) NOPASSWD:ALL/' /etc/sudoers \
   ;
