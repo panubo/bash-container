@@ -16,8 +16,11 @@ install:
   - sudo cp gomplate_linux-amd64-slim /usr/local/bin/gomplate
   - gomplate --version
 
+env:
+  global:
+    - BATS_SUDO=true
+
 script:
-    - export BATS_SUDO=true
     - make
     - ./test.sh
     - shellcheck rendered/panubo-functions.sh
