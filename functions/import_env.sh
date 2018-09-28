@@ -4,6 +4,8 @@
 # Since this is executed as a function the exports will be available to sub processes.
 # Usage: import_env ENVFILE
 import_env() {
+  command -v realpath >/dev/null 2>&1 || { error "This function requires realpath to be installed."; return 1; }
+
   local file
   [[ ! -e "${1}" ]] && { error "${1} does not exist"; return 1; }
   [[ ! -f "${1}" ]] && { error "${1} is not a file"; return 2; }
