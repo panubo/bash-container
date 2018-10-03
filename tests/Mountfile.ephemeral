@@ -1,0 +1,3 @@
+# This is a Mountfile with ephemeral mounts
+ephemeral: media/tmp
+ephemeral : uploads/tmp
