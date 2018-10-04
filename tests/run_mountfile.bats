@@ -90,7 +90,7 @@ source ../functions/run_mountfile.sh
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = 'Mounting remote path media/foo => media-uploads/foo' ]
   [ "${lines[1]}" = 'Mounting remote path media/bar => media-uploads/bar' ]
-  [ "${lines[2]}" = 'Mounting remote path content1 => content-uploads/1' ]
+  [ "${lines[2]}" = 'Mounting remote path content-1 => content-uploads/1' ]
   [ "${lines[3]}" = 'Mounting remote path content2.example.com => content2.example.com' ]
   [ "${lines[4]}" = 'Mounting remote path ephemeral => uploads/tmp' ]
 

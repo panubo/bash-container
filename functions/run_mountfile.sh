@@ -19,7 +19,7 @@ run_mountfile() {
 
   while read -r line || [[ -n "${line}" ]]; do
     if [[ -z "${line}" ]] || [[ "${line}" == \#* ]]; then continue; fi
-    [[ "${line}" =~ ([[:alnum:]/\.]*)[[:space:]]?:[[:space:]]?(.*) ]]
+    [[ "${line}" =~ ([[:alnum:]/\.-]*)[[:space:]]?:[[:space:]]?(.*) ]]
     remote_dir="${BASH_REMATCH[1]}"
     mount_dir="${BASH_REMATCH[2]}"
     (>&1 echo "Mounting remote path ${remote_dir} => ${mount_dir}")
