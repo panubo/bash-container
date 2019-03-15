@@ -26,9 +26,9 @@ RUN set -x \
   && wget -nv https://github.com/panubo/bash-container/releases/download/v${BASHCONTAINER_VERSION}/panubo-functions.tar.gz \
   && wget -nv https://github.com/panubo/bash-container/releases/download/v${BASHCONTAINER_VERSION}/panubo-functions.tar.gz.asc \
   && GPG_KEYS="E51A4070A3FFBD68C65DDB9D8BECEF8DFFCC60DD" \
-  && ( gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEYS" \
-      || gpg --keyserver pgp.mit.edu --recv-keys "$GPG_KEYS" \
-      || gpg --keyserver keyserver.pgp.com --recv-keys "$GPG_KEYS" ) \
+  && ( gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$GPG_KEYS" \
+      || gpg --keyserver hkp://ipv4.pool.sks-keyservers.net --recv-keys "$GPG_KEYS" \
+      || gpg --keyserver hkp://pgp.mit.edu:80 --recv-keys "$GPG_KEYS" ) \
   && gpg --batch --verify panubo-functions.tar.gz.asc panubo-functions.tar.gz  \
   && tar -C / -zxf panubo-functions.tar.gz \
   && rm -rf /tmp/* \
@@ -54,12 +54,17 @@ RUN set -x \
   && wget -nv https://github.com/panubo/bash-container/releases/download/v${BASHCONTAINER_VERSION}/panubo-functions.tar.gz \
   && wget -nv https://github.com/panubo/bash-container/releases/download/v${BASHCONTAINER_VERSION}/panubo-functions.tar.gz.asc \
   && GPG_KEYS="E51A4070A3FFBD68C65DDB9D8BECEF8DFFCC60DD" \
-  && ( gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEYS" \
-      || gpg --keyserver pgp.mit.edu --recv-keys "$GPG_KEYS" \
-      || gpg --keyserver keyserver.pgp.com --recv-keys "$GPG_KEYS" ) \
+  && ( gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$GPG_KEYS" \
+      || gpg --keyserver hkp://ipv4.pool.sks-keyservers.net --recv-keys "$GPG_KEYS" \
+      || gpg --keyserver hkp://pgp.mit.edu:80 --recv-keys "$GPG_KEYS" ) \
   && gpg --batch --verify panubo-functions.tar.gz.asc panubo-functions.tar.gz  \
   && tar -C / -zxf panubo-functions.tar.gz \
   && rm -rf /tmp/* \
   && apk del ${fetchDeps} \
   ;
 ```
+
+## Bash Strict Mode
+
+Although we like [Unofficial Bash Strict Mode](http://redsymbol.net/articles/unofficial-bash-strict-mode/) not all of these function currently work under stict mode.
+
