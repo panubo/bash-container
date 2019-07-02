@@ -142,6 +142,7 @@ export BATS_SUDO=true
 @test "run_mountfile: target outside working" {
   # setup
   mountfile="Mountfile.outsideworking"
+  tmpdir=$(mktemp -d)
   mkdir -p "${tmpdir}/data"
 
   # run test
