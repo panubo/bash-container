@@ -90,6 +90,8 @@ source ../functions/run_mountfile.sh
 
   # run test
   run run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
+  # log output on test failure
+  echo "output = ${output}"
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = 'Mounting remote path media/foo => media-uploads/foo' ]
   [ "${lines[1]}" = 'Mounting remote path media/bar => media-uploads/bar' ]
