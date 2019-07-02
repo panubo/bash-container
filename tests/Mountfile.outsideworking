@@ -1,0 +1,5 @@
+# Mountfile to test mounting outside working dir
+# This mount must fail
+# source : target
+
+temp : /srv/not-working-directory

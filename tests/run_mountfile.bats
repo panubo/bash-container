@@ -35,8 +35,9 @@ export BATS_SUDO=true
   run ./_test.sh run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
   echo "output = ${output}" # log output on test failure
   [ "$status" -eq 0 ]
-  [ "${lines[0]}" = 'Mounting remote path content1 => content-uploads/1' ]
-  [ "${lines[1]}" = 'Mounting remote path content2 => content-uploads/2' ]
+  [ "${lines[0]}" = "Mounting remote path ${tmpdir}/data/content1 => ${tmpdir}/content-uploads/1" ]
+  [ "${lines[1]}" = "Mounting remote path ${tmpdir}/data/content2 => ${tmpdir}/content-uploads/2" ]
+  [ "${lines[2]}" = '' ]
 
   # check dirs exist
   [ -e "${tmpdir}/data/content1" ]
@@ -73,8 +74,9 @@ export BATS_SUDO=true
   run ./_test.sh run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
   echo "output = ${output}" # log output on test failure
   [ "$status" -eq 0 ]
-  [ "${lines[0]}" = 'Mounting remote path content1 => content-uploads/1' ]
-  [ "${lines[1]}" = 'Mounting remote path content2 => content-uploads/2' ]
+  [ "${lines[0]}" = "Mounting remote path ${tmpdir}/data/content1 => ${tmpdir}/content-uploads/1" ]
+  [ "${lines[1]}" = "Mounting remote path ${tmpdir}/data/content2 => ${tmpdir}/content-uploads/2" ]
+  [ "${lines[2]}" = '' ]
 
   # check existing file is still there
   [ -e "${tmpdir}/data/content2/existing.txt" ]
@@ -103,12 +105,12 @@ export BATS_SUDO=true
   run ./_test.sh run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
   echo "output = ${output}" # log output on test failure
   [ "$status" -eq 0 ]
-  [ "${lines[0]}" = 'Mounting remote path media/foo => media-uploads/foo' ]
-  [ "${lines[1]}" = 'Mounting remote path media/bar => media-uploads/bar' ]
-  [ "${lines[2]}" = 'Mounting remote path content-1 => content-uploads/1' ]
-  [ "${lines[3]}" = 'Mounting remote path content2.example.com => content2.example.com' ]
-  [ "${lines[4]}" = 'Mounting remote path temp => /tmp/temp-files' ]
-  [ "${lines[5]}" = 'Mounting remote path ephemeral => uploads/tmp' ]
+  [ "${lines[0]}" = "Mounting remote path ${tmpdir}/data/media/foo => ${tmpdir}/media-uploads/foo" ]
+  [ "${lines[1]}" = "Mounting remote path ${tmpdir}/data/media/bar => ${tmpdir}/media-uploads/bar" ]
+  [ "${lines[2]}" = "Mounting remote path ${tmpdir}/data/content-1 => ${tmpdir}/content-uploads/1" ]
+  [ "${lines[3]}" = "Mounting remote path ${tmpdir}/data/content2.example.com => ${tmpdir}/content2.example.com" ]
+  grep -E '^Mounting remote path /tmp/tmp.*$' <<< "${lines[4]}"
+  [ "${lines[5]}" = '' ]
 
   # cleanup
   [[ $EUID -eq 0 ]] && rm -rf "${tmpdir}" || sudo rm -rf "${tmpdir}"
@@ -125,12 +127,44 @@ export BATS_SUDO=true
   run ./_test.sh run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
   echo "output = ${output}" # log output on test failure
   [ "$status" -eq 0 ]
-  [ "${lines[0]}" = 'Mounting remote path ephemeral => media/tmp' ]
-  [ "${lines[1]}" = 'Mounting remote path ephemeral => uploads/tmp' ]
+  grep -E '^Mounting remote path /tmp/tmp.*$' <<< "${lines[0]}"
+  grep -E '^Mounting remote path /tmp/tmp.*$' <<< "${lines[1]}"
+  [ "${lines[2]}" = '' ]
 
   # check that links are rooted in /tmp, not /tmp/data
   [ "$(dirname $(realpath "${tmpdir}/media/tmp"))" == '/tmp' ]
   [ "$(dirname $(realpath "${tmpdir}/uploads/tmp"))" == '/tmp' ]
+
+  # cleanup
+  [[ $EUID -eq 0 ]] && rm -rf "${tmpdir}" || sudo rm -rf "${tmpdir}"
+}
+
+@test "run_mountfile: target outside working" {
+  # setup
+  mountfile="Mountfile.outsideworking"
+  mkdir -p "${tmpdir}/data"
+
+  # run test
+  run ./_test.sh run_mountfile ${mountfile} "${tmpdir}/data"
+  echo "output = ${output}" # log output on test failure
+  [ "$status" -eq 129 ]
+  [ "${lines[0]}" = 'Error: Target outside working directory!' ]
+  [ "${lines[1]}" = '' ]
+}
+
+@test "run_mountfile: source outside data" {
+  # setup
+  mountfile="Mountfile.outsidedata"
+  tmpdir=$(mktemp -d)
+  mkdir -p "${tmpdir}/data"
+  cp ${mountfile} ${tmpdir}
+
+  # run test
+  run ./_test.sh run_mountfile ${tmpdir}/${mountfile} "${tmpdir}/data"
+  echo "output = ${output}" # log output on test failure
+  [ "$status" -eq 129 ]
+  [ "${lines[0]}" = 'Error: Source not within data directory!' ]
+  [ "${lines[1]}" = '' ]
 
   # cleanup
   [[ $EUID -eq 0 ]] && rm -rf "${tmpdir}" || sudo rm -rf "${tmpdir}"

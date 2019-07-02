@@ -4,5 +4,4 @@ media/foo: media-uploads/foo
 media/bar: media-uploads/bar
 content-1 : content-uploads/1
 content2.example.com: content2.example.com
-temp : /tmp/temp-files
 ephemeral : uploads/tmp

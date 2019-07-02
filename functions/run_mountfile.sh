@@ -1,9 +1,9 @@
-# run_mountfile [FILENAME] [DATADIR]
+# run_mountfile [FILENAME] [data_dirDIR]
 # run_mountfile Mountfile /srv/remote
 run_mountfile() {
   # Mount all dirs specified in Mountfile
   local mountfile="${1:-"Mountfile"}"
-  local data="${2:-"/srv/remote"}"
+  local data_dir="${2:-"/srv/remote"}"
   local mount_uid="48"
   local mount_gid="48"
   local source_dir=""
@@ -12,13 +12,13 @@ run_mountfile() {
 
   if [[ $EUID -ne 0 ]]; then echo "Must be run as root"; return 1; fi
   if [[ ! -e "${mountfile}" ]]; then echo "Mountfile not found"; return 0; fi
-  if [[ ! -e "${data}" ]]; then echo "Data dir not found"; return 1; fi
+  if [[ ! -e "${data_dir}" ]]; then echo "Data dir not found"; return 1; fi
 
   # normalise path to Mountfile
   mountfile="$(realpath "${mountfile}")"
 
   # normalise data dir
-  data="$(realpath "${data}")"
+  data_dir="$(realpath "${data_dir}")"
 
   # calculate working_dir from Mountfile location
   working_dir="$(dirname "${mountfile}")"
@@ -29,24 +29,33 @@ run_mountfile() {
   while read -r line || [[ -n "${line}" ]]; do
     if [[ -z "${line}" ]] || [[ "${line}" == \#* ]]; then continue; fi
     [[ "${line}" =~ ([[:alnum:]/\.-]*)[[:space:]]?:[[:space:]]?(.*) ]]
-    source_dir="${BASH_REMATCH[1]}"
-    target_dir="${BASH_REMATCH[2]}"
-    (>&1 echo "Mounting remote path ${source_dir} => ${target_dir}")
+    s="${BASH_REMATCH[1]}"
+    t="${BASH_REMATCH[2]}"
 
-    # create ephemeral or remote dir if not exist
-    if [[ "${source_dir}" == "ephemeral" ]]; then
+    # normalise
+    target_dir="$(realpath -m ${t})"
+
+    # handle ephemeral
+    if [[ "${s}" == "ephemeral" ]]; then
+      # create ephemeral
       source_dir="$(mktemp -d)"
     else
-      # make remote source dir if not exist
-      [[ ! -e "${data}/${source_dir}" ]] && mkdir -p "${data}/${source_dir}"
-      source_dir="${data}/${source_dir}"
+      # normalise
+      source_dir="$(cd "${data_dir}" && realpath -m "${s}")"
+      # safety checks
+      [[ ! "${target_dir}" =~ "${working_dir}" ]] && { echo "Error: Target outside working directory!" && exit 129; }
+      [[ ! "${source_dir}" =~ "${data_dir}" ]] && { echo "Error: Source not within data directory!" && exit 129; }
     fi
+
+    (>&1 echo "Mounting remote path ${source_dir} => ${target_dir}")
+
+    # make remote source dir if not exist
+    [[ ! -e "${source_dir}" ]] && mkdir -p "${source_dir}"
 
     # remove if target_dir is a link
     [[ -L "${target_dir}" ]] && rm -f "${target_dir}"
 
     # create mount target (including parents) if required
-    # NB this path is not normalised, however we are operating in $working_dir so relative paths are ok
     mkdir -p "${target_dir}"
 
     # Copy mount to remote, if remote is empty, and target_dir has files
