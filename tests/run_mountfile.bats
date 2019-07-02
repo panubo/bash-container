@@ -2,6 +2,14 @@
 
 export BATS_SUDO=true
 
+@test "run_mountfile: test defaults" {
+  mkdir -p /srv/remote
+  run ./_test.sh run_mountfile
+  echo "output = ${output}" # log output on test failure
+  [ "$status" -eq 0 ]
+  [ "${lines[0]}" = '' ]
+}
+
 @test "run_mountfile: mountfile does not exist" {
   run ./_test.sh run_mountfile Mountfile.doesntexist
   echo "output = ${output}" # log output on test failure

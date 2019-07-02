@@ -2,8 +2,8 @@
 # run_mountfile Mountfile /srv/remote
 run_mountfile() {
   # Mount all dirs specified in Mountfile
-  local mountfile="${1:-'Mountfile'}"
-  local data="${2:-'/srv/remote'}"
+  local mountfile="${1:-"Mountfile"}"
+  local data="${2:-"/srv/remote"}"
   local mount_uid="48"
   local mount_gid="48"
   local source_dir=""
