@@ -1,8 +1,15 @@
-# Using ubuntu:trusty because travis-ci default to ubuntu:trust
-FROM docker.io/ubuntu:trusty
+# Using ubuntu:xenial because travis-ci is using to ubuntu:xenial
+FROM docker.io/ubuntu:xenial
 #FROM docker.io/debian:stretch-slim
 
 # This Dockerfile is intended for testing and development of panubo-functions.sh and is not for distribution of panubo-functions.sh
+
+# Install test dependencies
+RUN set -x \
+  && apt-get -y update \
+  && apt-get -y install tzdata \
+  && rm -rf /var/lib/apt/lists/* \
+  ;
 
 RUN set -x \
   && apt-get update \
@@ -43,4 +50,3 @@ RUN set -x \
   ;
 
 COPY rendered/panubo-functions.sh /panubo-functions.sh
-  
