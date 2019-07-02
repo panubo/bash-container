@@ -15,10 +15,10 @@ run_mountfile() {
   if [[ ! -e "${data}" ]]; then echo "Data dir not found"; return 1; fi
 
   # normalise path to Mountfile
-  mountfile="$(readlink -f "${mountfile}")"
+  mountfile="$(realpath "${mountfile}")"
 
   # normalise data dir
-  data="$(readlink -f "${data}")"
+  data="$(realpath "${data}")"
 
   # calculate working_dir from Mountfile location
   working_dir="$(dirname "${mountfile}")"

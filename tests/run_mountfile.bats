@@ -121,8 +121,8 @@ export BATS_SUDO=true
   [ "${lines[1]}" = 'Mounting remote path ephemeral => uploads/tmp' ]
 
   # check that links are rooted in /tmp, not /tmp/data
-  [ "$(dirname $(readlink -f "${tmpdir}/media/tmp"))" == '/tmp' ]
-  [ "$(dirname $(readlink -f "${tmpdir}/uploads/tmp"))" == '/tmp' ]
+  [ "$(dirname $(realpath "${tmpdir}/media/tmp"))" == '/tmp' ]
+  [ "$(dirname $(realpath "${tmpdir}/uploads/tmp"))" == '/tmp' ]
 
   # cleanup
   [[ $EUID -eq 0 ]] && rm -rf "${tmpdir}" || sudo rm -rf "${tmpdir}"
