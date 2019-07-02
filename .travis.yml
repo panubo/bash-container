@@ -1,5 +1,7 @@
 language: bash
 
+dist: xenial
+
 install:
 
   # Install realpath which is missing from trusty
