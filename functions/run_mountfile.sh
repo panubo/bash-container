@@ -10,6 +10,7 @@ run_mountfile() {
   local target_dir=""
   local working_dir=""
 
+  if [[ $EUID -ne 0 ]]; then echo "Must be run as root"; return 1; fi
   if [[ ! -e "${mountfile}" ]]; then echo "Mountfile not found"; return 0; fi
   if [[ ! -e "${data}" ]]; then echo "Data dir not found"; return 1; fi
 

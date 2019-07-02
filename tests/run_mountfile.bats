@@ -1,16 +1,17 @@
 #!/usr/bin/env bats
 
-source ../functions/10-common.sh
-source ../functions/run_mountfile.sh
+export BATS_SUDO=true
 
 @test "run_mountfile: mountfile does not exist" {
-  run run_mountfile Mountfile.doesntexist
+  run ./_test.sh run_mountfile Mountfile.doesntexist
+  echo "output = ${output}" # log output on test failure
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = 'Mountfile not found' ]
 }
 
 @test "run_mountfile: datadir does not exist" {
-  run run_mountfile Mountfile.simple doesntexist
+  run ./_test.sh run_mountfile Mountfile.simple doesntexist
+  echo "output = ${output}" # log output on test failure
   [ "$status" -eq 1 ]
   [ "${lines[0]}" = 'Data dir not found' ]
 }
@@ -23,7 +24,8 @@ source ../functions/run_mountfile.sh
   cp ${mountfile} ${tmpdir}
 
   # run test
-  run run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
+  run ./_test.sh run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
+  echo "output = ${output}" # log output on test failure
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = 'Mounting remote path content1 => content-uploads/1' ]
   [ "${lines[1]}" = 'Mounting remote path content2 => content-uploads/2' ]
@@ -39,7 +41,7 @@ source ../functions/run_mountfile.sh
   [ $(stat -c %g "${tmpdir}/data/content1") == "48" ]
 
   # cleanup
-  rm -rf "${tmpdir}"
+  [[ $EUID -eq 0 ]] && rm -rf "${tmpdir}" || sudo rm -rf "${tmpdir}"
 }
 
 @test "run_mountfile: mount (corner cases)" {
@@ -60,7 +62,8 @@ source ../functions/run_mountfile.sh
   echo "Some template file with content" > "${tmpdir}/content-uploads/2/templated.txt"
 
   # run test
-  run run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
+  run ./_test.sh run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
+  echo "output = ${output}" # log output on test failure
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = 'Mounting remote path content1 => content-uploads/1' ]
   [ "${lines[1]}" = 'Mounting remote path content2 => content-uploads/2' ]
@@ -78,7 +81,7 @@ source ../functions/run_mountfile.sh
   [ ! -e "${tmpdir}/content-uploads/2/templated.txt" ]
 
   # cleanup
-  rm -rf "${tmpdir}"
+  [[ $EUID -eq 0 ]] && rm -rf "${tmpdir}" || sudo rm -rf "${tmpdir}"
 }
 
 @test "run_mountfile: mount (complex)" {
@@ -89,9 +92,8 @@ source ../functions/run_mountfile.sh
   cp ${mountfile} ${tmpdir}
 
   # run test
-  run run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
-  # log output on test failure
-  echo "output = ${output}"
+  run ./_test.sh run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
+  echo "output = ${output}" # log output on test failure
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = 'Mounting remote path media/foo => media-uploads/foo' ]
   [ "${lines[1]}" = 'Mounting remote path media/bar => media-uploads/bar' ]
@@ -101,7 +103,7 @@ source ../functions/run_mountfile.sh
   [ "${lines[5]}" = 'Mounting remote path ephemeral => uploads/tmp' ]
 
   # cleanup
-  rm -rf "${tmpdir}"
+  [[ $EUID -eq 0 ]] && rm -rf "${tmpdir}" || sudo rm -rf "${tmpdir}"
 }
 
 @test "run_mountfile: ephemeral mounts" {
@@ -112,7 +114,8 @@ source ../functions/run_mountfile.sh
   cp ${mountfile} ${tmpdir}
 
   # run test
-  run run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
+  run ./_test.sh run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
+  echo "output = ${output}" # log output on test failure
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = 'Mounting remote path ephemeral => media/tmp' ]
   [ "${lines[1]}" = 'Mounting remote path ephemeral => uploads/tmp' ]
@@ -122,5 +125,5 @@ source ../functions/run_mountfile.sh
   [ "$(dirname $(readlink -f "${tmpdir}/uploads/tmp"))" == '/tmp' ]
 
   # cleanup
-  rm -rf "${tmpdir}"
+  [[ $EUID -eq 0 ]] && rm -rf "${tmpdir}" || sudo rm -rf "${tmpdir}"
 }
