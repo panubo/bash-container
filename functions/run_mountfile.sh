@@ -33,7 +33,7 @@ run_mountfile() {
     t="${BASH_REMATCH[2]}"
 
     # normalise
-    target_dir="$(realpath -m ${t})"
+    target_dir="$(realpath -m "${t}")"
 
     # handle ephemeral
     if [[ "${s}" == "ephemeral" ]]; then
@@ -43,8 +43,8 @@ run_mountfile() {
       # normalise
       source_dir="$(cd "${data_dir}" && realpath -m "${s}")"
       # safety checks
-      [[ ! "${target_dir}" =~ "${working_dir}" ]] && { echo "Error: Target outside working directory!" && exit 129; }
-      [[ ! "${source_dir}" =~ "${data_dir}" ]] && { echo "Error: Source not within data directory!" && exit 129; }
+      [[ ! "${target_dir}" =~ ${working_dir} ]] && { echo "Error: Target outside working directory!" && exit 129; }
+      [[ ! "${source_dir}" =~ ${data_dir} ]] && { echo "Error: Source not within data directory!" && exit 129; }
     fi
 
     (>&1 echo "Mounting remote path ${source_dir} => ${target_dir}")
