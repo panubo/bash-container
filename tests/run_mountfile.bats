@@ -10,19 +10,20 @@ source ../functions/run_mountfile.sh
 }
 
 @test "run_mountfile: datadir does not exist" {
-  run run_mountfile Mountfile doesntexist
+  run run_mountfile Mountfile.simple doesntexist
   [ "$status" -eq 1 ]
-  [ "${lines[0]}" = 'Datadir not found' ]
+  [ "${lines[0]}" = 'Data dir not found' ]
 }
 
 @test "run_mountfile: mount (simple)" {
   # setup
+  mountfile="Mountfile.simple"
   tmpdir=$(mktemp -d)
   mkdir -p "${tmpdir}/data"
-  cp Mountfile ${tmpdir}
+  cp ${mountfile} ${tmpdir}
 
   # run test
-  run run_mountfile ${tmpdir}/Mountfile ${tmpdir}/data
+  run run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = 'Mounting remote path content1 => content-uploads/1' ]
   [ "${lines[1]}" = 'Mounting remote path content2 => content-uploads/2' ]
@@ -43,9 +44,10 @@ source ../functions/run_mountfile.sh
 
 @test "run_mountfile: mount (corner cases)" {
   # setup
+  mountfile="Mountfile.simple"
   tmpdir=$(mktemp -d)
   mkdir -p "${tmpdir}/data"
-  cp Mountfile ${tmpdir}
+  cp ${mountfile} ${tmpdir}
 
   # existing content
   mkdir -p "${tmpdir}/data/content2"
@@ -58,7 +60,7 @@ source ../functions/run_mountfile.sh
   echo "Some template file with content" > "${tmpdir}/content-uploads/2/templated.txt"
 
   # run test
-  run run_mountfile ${tmpdir}/Mountfile ${tmpdir}/data
+  run run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = 'Mounting remote path content1 => content-uploads/1' ]
   [ "${lines[1]}" = 'Mounting remote path content2 => content-uploads/2' ]
@@ -81,18 +83,20 @@ source ../functions/run_mountfile.sh
 
 @test "run_mountfile: mount (complex)" {
   # setup
+  mountfile="Mountfile.complex"
   tmpdir=$(mktemp -d)
   mkdir -p "${tmpdir}/data"
-  cp Mountfile.complex ${tmpdir}
+  cp ${mountfile} ${tmpdir}
 
   # run test
-  run run_mountfile ${tmpdir}/Mountfile.complex ${tmpdir}/data
+  run run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = 'Mounting remote path media/foo => media-uploads/foo' ]
   [ "${lines[1]}" = 'Mounting remote path media/bar => media-uploads/bar' ]
   [ "${lines[2]}" = 'Mounting remote path content-1 => content-uploads/1' ]
   [ "${lines[3]}" = 'Mounting remote path content2.example.com => content2.example.com' ]
-  [ "${lines[4]}" = 'Mounting remote path ephemeral => uploads/tmp' ]
+  [ "${lines[4]}" = 'Mounting remote path temp => /tmp/temp-files' ]
+  [ "${lines[5]}" = 'Mounting remote path ephemeral => uploads/tmp' ]
 
   # cleanup
   rm -rf "${tmpdir}"
@@ -100,12 +104,13 @@ source ../functions/run_mountfile.sh
 
 @test "run_mountfile: ephemeral mounts" {
   # setup
+  mountfile="Mountfile.ephemeral"
   tmpdir=$(mktemp -d)
   mkdir -p "${tmpdir}/data"
-  cp Mountfile.ephemeral ${tmpdir}
+  cp ${mountfile} ${tmpdir}
 
   # run test
-  run run_mountfile ${tmpdir}/Mountfile.ephemeral ${tmpdir}/data
+  run run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = 'Mounting remote path ephemeral => media/tmp' ]
   [ "${lines[1]}" = 'Mounting remote path ephemeral => uploads/tmp' ]
