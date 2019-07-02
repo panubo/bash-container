@@ -1,4 +1,4 @@
-# run_mountfile [FILENAME] [data_dirDIR]
+# run_mountfile [FILENAME] [DATADIR]
 # run_mountfile Mountfile /srv/remote
 run_mountfile() {
   # Mount all dirs specified in Mountfile
@@ -33,7 +33,7 @@ run_mountfile() {
     t="${BASH_REMATCH[2]}"
 
     # normalise
-    target_dir="$(realpath -m "${t}")"
+    target_dir="$(readlink -f -m "${t}")"
 
     # handle ephemeral
     if [[ "${s}" == "ephemeral" ]]; then
@@ -41,7 +41,7 @@ run_mountfile() {
       source_dir="$(mktemp -d)"
     else
       # normalise
-      source_dir="$(cd "${data_dir}" && realpath -m "${s}")"
+      source_dir="$(cd "${data_dir}" && readlink -f -m "${s}")"
       # safety checks
       [[ ! "${target_dir}" =~ ${working_dir} ]] && { echo "Error: Target outside working directory!" && exit 129; }
       [[ ! "${source_dir}" =~ ${data_dir} ]] && { echo "Error: Source not within data directory!" && exit 129; }
