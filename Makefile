@@ -19,7 +19,7 @@ run-docker:
 	docker build -t panubo/bash-container .
 	docker run --rm -it -v $(shell pwd):/src --workdir /src --user user panubo/bash-container
 
-test-docker-alpine:
+run-docker-alpine:
 	docker build -f Dockerfile.alpine -t panubo/bash-container-alpine .
 	docker run --rm -it -v $(shell pwd):/src --workdir /src panubo/bash-container-alpine
 

@@ -1,0 +1,5 @@
+# Mountfile to test mounting outside remote data dir
+# This mount must fail
+# source : target
+
+/tmp/temp-files : temp
