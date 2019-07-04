@@ -24,7 +24,7 @@ run_mountfile() {
   working_dir="$(dirname "${mountfile}")"
 
   # make sure we are operating in the same dir that holds the Mountfile
-  pushd "${working_dir}" 1> /dev/null || exit 1
+  pushd "${working_dir}" 1> /dev/null || return 1
 
   while read -r line || [[ -n "${line}" ]]; do
     if [[ -z "${line}" ]] || [[ "${line}" == \#* ]]; then continue; fi
@@ -43,8 +43,8 @@ run_mountfile() {
       # normalise
       source_dir="$(cd "${data_dir}" && readlink -f -m "${s}")"
       # safety checks
-      [[ ! "${target_dir}" =~ ${working_dir} ]] && { echo "Error: Target outside working directory!" && exit 129; }
-      [[ ! "${source_dir}" =~ ${data_dir} ]] && { echo "Error: Source not within data directory!" && exit 129; }
+      [[ ! "${target_dir}" =~ ${working_dir} ]] && { echo "Error: Target outside working directory!" && return 129; }
+      [[ ! "${source_dir}" =~ ${data_dir} ]] && { echo "Error: Source not within data directory!" && return 129; }
     fi
 
     (>&1 echo "Mounting remote path ${source_dir} => ${target_dir}")
