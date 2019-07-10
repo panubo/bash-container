@@ -60,35 +60,37 @@ export BATS_SUDO=true
   mkdir -p "${tmpdir}/data"
   cp ${mountfile} ${tmpdir}
 
-  # existing content
-  mkdir -p "${tmpdir}/data/content2"
-  echo "Some existing file with content" > "${tmpdir}/data/content2/existing.txt"
-
   # templated content
-  mkdir -p "${tmpdir}/content-uploads/1" "${tmpdir}/content-uploads/2"
+  mkdir -p "${tmpdir}/content-uploads/1"
   echo "Some template file with content" > "${tmpdir}/content-uploads/1/templated.txt"
   mkdir -p "${tmpdir}/content-uploads/2"
   echo "Some template file with content" > "${tmpdir}/content-uploads/2/templated.txt"
+
+  # existing content
+  mkdir -p "${tmpdir}/data/content2"
+  echo "Some existing file with content" > "${tmpdir}/data/content2/existing.txt"
 
   # run test
   run ./_test.sh run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
   echo "output = ${output}" # log output on test failure
   [ "$status" -eq 0 ]
-  [ "${lines[0]}" = "Mounting remote path ${tmpdir}/data/content1 => ${tmpdir}/content-uploads/1" ]
-  [ "${lines[1]}" = "Mounting remote path ${tmpdir}/data/content2 => ${tmpdir}/content-uploads/2" ]
-  [ "${lines[2]}" = '' ]
 
-  # check existing file is still there
-  [ -e "${tmpdir}/data/content2/existing.txt" ]
-  [ -e "${tmpdir}/content-uploads/2/existing.txt" ]
+  [ "${lines[0]}" = "Copying template content ${tmpdir}/content-uploads/1 => ${tmpdir}/data/content1" ]
+  [ "${lines[1]}" = "Mounting remote path ${tmpdir}/data/content1 => ${tmpdir}/content-uploads/1" ]
+  [ "${lines[2]}" = "Mounting remote path ${tmpdir}/data/content2 => ${tmpdir}/content-uploads/2" ]
+  [ "${lines[3]}" = '' ]
 
   # check template file *is* copied in
-  [ ! -e "${tmpdir}/data/content1/templated.txt" ]
-  [ ! -e "${tmpdir}/content-uploads/1/templated.txt" ]
+  [ -e "${tmpdir}/data/content1/templated.txt" ]
+  [ -e "${tmpdir}/content-uploads/1/templated.txt" ]
 
   # check template file *is not* copied in
   [ ! -e "${tmpdir}/data/content2/templated.txt" ]
   [ ! -e "${tmpdir}/content-uploads/2/templated.txt" ]
+
+  # check existing file is still there
+  [ -e "${tmpdir}/data/content2/existing.txt" ]
+  [ -e "${tmpdir}/content-uploads/2/existing.txt" ]
 
   # cleanup
   [[ $EUID -eq 0 ]] && rm -rf "${tmpdir}" || sudo rm -rf "${tmpdir}"
@@ -166,6 +168,36 @@ export BATS_SUDO=true
   [ "$status" -eq 129 ]
   [ "${lines[0]}" = 'Error: Source not within data directory!' ]
   [ "${lines[1]}" = '' ]
+
+  # cleanup
+  [[ $EUID -eq 0 ]] && rm -rf "${tmpdir}" || sudo rm -rf "${tmpdir}"
+}
+
+@test "run_mountfile: re-mounting" {
+  # setup
+  mountfile="Mountfile.simple"
+  tmpdir=$(mktemp -d)
+  mkdir -p "${tmpdir}/data"
+  cp ${mountfile} ${tmpdir}
+
+  # run test
+  run ./_test.sh run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
+  # remount
+  run ./_test.sh run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
+  echo "output = ${output}" # log output on test failure
+  [ "$status" -eq 0 ]
+
+  [ "${lines[0]}" = "Mounting remote path ${tmpdir}/data/content1 => ${tmpdir}/content-uploads/1" ]
+  [ "${lines[1]}" = "Mounting remote path ${tmpdir}/data/content2 => ${tmpdir}/content-uploads/2" ]
+  [ "${lines[2]}" = '' ]
+
+  # check mount source is not a link
+  [ ! -L "${tmpdir}/data/content1" ]
+  [ ! -L "${tmpdir}/data/content2" ]
+
+  # check mount target is a link
+  [ -L "${tmpdir}/content-uploads/1" ]
+  [ -L "${tmpdir}/content-uploads/2" ]
 
   # cleanup
   [[ $EUID -eq 0 ]] && rm -rf "${tmpdir}" || sudo rm -rf "${tmpdir}"

@@ -33,7 +33,9 @@ run_mountfile() {
     t="${BASH_REMATCH[2]}"
 
     # normalise
-    target_dir="$(readlink -f -m "${t}")"
+    # remove link if it exists otherwise readlink will follow link to remote
+    [[ -L "${working_dir}/${t}" ]] && rm -f "${working_dir}/${t}"
+    target_dir="$(cd "${working_dir}" && readlink -f -m "${t}")"
 
     # handle ephemeral
     if [[ "${s}" == "ephemeral" ]]; then
@@ -47,26 +49,26 @@ run_mountfile() {
       [[ ! "${source_dir}" =~ ${data_dir} ]] && { echo "Error: Source not within data directory!" && return 129; }
     fi
 
-    (>&1 echo "Mounting remote path ${source_dir} => ${target_dir}")
-
     # make remote source dir if not exist
     [[ ! -e "${source_dir}" ]] && mkdir -p "${source_dir}"
-
-    # remove if target_dir is a link
-    [[ -L "${target_dir}" ]] && rm -f "${target_dir}"
 
     # create mount target (including parents) if required
     mkdir -p "${target_dir}"
 
     # Copy mount to remote, if remote is empty, and target_dir has files
-    if [[ "$(ls -A "${target_dir}")" ]] && [ ! "$(ls -A "${source_dir}")" ]; then
-      cp -a "${target_dir}/" "${source_dir}/"
+    if [[ "$(ls -A "${target_dir}")" ]] && [[ ! "$(ls -A "${source_dir}")" ]]; then
+      echo "Copying template content ${target_dir} => ${source_dir}"
+      # gnu cp does not respect trainling / with -a, so we remove the dir
+      rmdir "${source_dir}"
+      cp -a ${target_dir}/ "${source_dir}"
       # Fix permissions recursively in remote
       chown -R ${mount_uid}:${mount_gid} "${source_dir}"
     else
       # Set permission on remote
       chown ${mount_uid}:${mount_gid} "${source_dir}"
     fi
+
+    (>&1 echo "Mounting remote path ${source_dir} => ${target_dir}")
 
     # Delete target_dir if exists. Create symlink to source_dir
     [[ -e "${target_dir}" ]] && rm -rf "${target_dir}"
