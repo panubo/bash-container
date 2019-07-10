@@ -60,7 +60,7 @@ run_mountfile() {
       echo "Copying template content ${target_dir} => ${source_dir}"
       # gnu cp does not respect trainling / with -a, so we remove the dir
       rmdir "${source_dir}"
-      cp -a ${target_dir}/ "${source_dir}"
+      cp -a "${target_dir}/" "${source_dir}"
       # Fix permissions recursively in remote
       chown -R ${mount_uid}:${mount_gid} "${source_dir}"
     else
