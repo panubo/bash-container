@@ -65,10 +65,10 @@ run_mountfile() {
       rmdir "${source_dir}"
       cp -a "${target_dir}/" "${source_dir}"
       # Fix permissions recursively in remote
-      chown -R ${mount_uid}:${mount_gid} "${source_dir}"
+      chown -R "${mount_uid}":"${mount_gid}" "${source_dir}"
     else
       # Set permission on remote
-      chown ${mount_uid}:${mount_gid} "${source_dir}"
+      chown "${mount_uid}":"${mount_gid}" "${source_dir}"
     fi
 
     (>&1 echo "Mounting remote path ${source_dir} => ${target_dir}")
