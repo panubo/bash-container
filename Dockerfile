@@ -18,7 +18,7 @@ RUN set -x \
   && sed -i 's/^%sudo.*/%sudo ALL=(ALL:ALL) NOPASSWD:ALL/' /etc/sudoers \
   ;
 
-# Install ShellCheck (Installing a newer version than is avaliable via apt-get)
+# Install ShellCheck (Installing a newer version than is available via apt-get)
 RUN set -x \
   && SHELLCHECK_VERSION=0.4.7 \
   && SHELLCHECK_CHECKSUM=64bf19a1292f0357c007b615150b6e58dba138bc7bf168c5a5e27016f8b4f802afd9950be8be46bf9e4833f98ae81c6e7b1761a3a76ddbba2a04929265433134 \
