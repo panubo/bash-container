@@ -46,6 +46,7 @@ source ../functions/run_procfile_commands.sh
 @test "run_procfile_commands: failure error code returned - command not found, and others run" {
   run run_procfile_commands Commandfile deploy1 unknown-command deploy2
   [ "$status" -eq "127" ]
+  [ "${lines[2]}" = 'Error: command unknown-command not found' ]
 }
 
 @test "run_procfile_commands: Commandfile not exist" {
