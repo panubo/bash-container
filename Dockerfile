@@ -23,7 +23,7 @@ RUN set -x \
   && SHELLCHECK_VERSION=0.4.7 \
   && SHELLCHECK_CHECKSUM=64bf19a1292f0357c007b615150b6e58dba138bc7bf168c5a5e27016f8b4f802afd9950be8be46bf9e4833f98ae81c6e7b1761a3a76ddbba2a04929265433134 \
   && cd /tmp \
-  && wget -nv https://shellcheck.storage.googleapis.com/shellcheck-v${SHELLCHECK_VERSION}.linux.x86_64.tar.xz \
+  && wget -nv https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.linux.x86_64.tar.xz \
   && echo "${SHELLCHECK_CHECKSUM}  shellcheck-v${SHELLCHECK_VERSION}.linux.x86_64.tar.xz" > /tmp/SHA512SUM \
   && sha512sum -c SHA512SUM \
   && tar -Jxf shellcheck-v${SHELLCHECK_VERSION}.linux.x86_64.tar.xz \
