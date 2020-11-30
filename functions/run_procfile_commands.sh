@@ -14,7 +14,7 @@ run_procfile_commands() {
   if [ ! -e "$deployfile" ]; then return 0; fi
   shift
   for command_name in "$@"; do
-    while read line || [[ -n "$line" ]]; do
+    while read -r line || [[ -n "$line" ]]; do
       if [[ -z "$line" ]] || [[ "$line" == \#* ]]; then continue; fi
       if [[ "${command_name}" == "${line%%:*}" ]]; then
         (>&2 echo "Running task ${line%%:*}: ${line#*:[[:space:]]}")
