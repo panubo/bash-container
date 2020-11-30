@@ -1,6 +1,5 @@
-# Using ubuntu:xenial because travis-ci is using to ubuntu:xenial
 FROM docker.io/ubuntu:xenial
-#FROM docker.io/debian:stretch-slim
+FROM docker.io/debian:stretch-slim
 
 # This Dockerfile is intended for testing and development of panubo-functions.sh and is not for distribution of panubo-functions.sh
 
