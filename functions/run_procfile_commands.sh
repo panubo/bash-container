@@ -27,7 +27,7 @@ run_procfile_commands() {
       fi
     done < "$procfile"
     # exit if one command has been run and then another is not found
-    [[ "${command_run}" == "true" ]] && [[ "${command_found}" == "false" ]] && { echo "Error command ${command_name} not found"; exit 127; }
+    [[ "${command_run}" == "true" ]] && [[ "${command_found}" == "false" ]] && { error "command ${command_name} not found"; exit 127; }
   done
   # exit 0 if commands run else return
   [[ "${command_run}" == "true" ]] && exit 0 || return 0

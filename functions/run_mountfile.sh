@@ -47,8 +47,8 @@ run_mountfile() {
       source_dir="$(cd "${data_dir}" && readlink -f -m "${s}")"
       # safety checks
       if [[ "${safety_checks}" == "true" ]]; then
-        [[ ! "${target_dir}" =~ ${working_dir} ]] && { echo "Error: Target outside working directory!" && return 129; }
-        [[ ! "${source_dir}" =~ ${data_dir} ]] && { echo "Error: Source not within data directory!" && return 129; }
+        [[ ! "${target_dir}" =~ ${working_dir} ]] && { error "Target outside working directory!" && return 129; }
+        [[ ! "${source_dir}" =~ ${data_dir} ]] && { error "Source not within data directory!" && return 129; }
       fi
     fi
 
