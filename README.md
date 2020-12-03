@@ -66,4 +66,4 @@ RUN set -x \
 
 ## Bash Strict Mode
 
-Although we like [Unofficial Bash Strict Mode](http://redsymbol.net/articles/unofficial-bash-strict-mode/) not all of these function currently work under strict mode.
+Although we like [Unofficial Bash Strict Mode](http://redsymbol.net/articles/unofficial-bash-strict-mode/) not all of these functions currently work under strict mode.
