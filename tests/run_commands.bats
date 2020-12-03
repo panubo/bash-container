@@ -19,6 +19,11 @@ source ../functions/run_commands.sh
   [ "${lines[2]}" = '' ]
 }
 
+@test "run_commands: non-existent-command as first argument" {
+  run run_commands Commandfile bash deploy1
+  [ "$status" -eq 127 ]
+}
+
 @test "run_commands: out of order args" {
   run run_commands Commandfile deploy2 deploy1
   [ "$status" -eq 0 ]
