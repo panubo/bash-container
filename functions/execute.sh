@@ -1,6 +1,6 @@
-# exec_procfile FILENAME TYPE
-# exec_procfile Procfile web
-exec_procfile() {
+# execute FILENAME TYPE
+# execute Procfile web
+execute() {
   # Exec Procfile command
   local procfile="${1:-'Procfile'}"
   if [[ ! -e "${procfile}" ]]; then return 0; fi
@@ -13,4 +13,8 @@ exec_procfile() {
   done < "${procfile}"
   # return 127 if no command was exec'd
   return 127
+}
+
+exec_procfile() {
+  execute Procfile "$1"
 }
