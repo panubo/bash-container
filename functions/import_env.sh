@@ -1,4 +1,4 @@
-# Docker --env-file doesn't interpret env files the the same as bash (`. ./env`) does 
+# Docker --env-file doesn't interpret env files the the same as bash (`. ./env`) does
 # eg. 'VARIABLE="foo bar"' would be 'VARIABLE=foo bar' in bash but 'VARIABLE="foo bar"' with Docker
 # This function sources and env file and then exports each variable by name (avoiding issues trying to do export $(cat env | xargs))
 # Since this is executed as a function the exports will be available to sub processes.
@@ -10,8 +10,7 @@ import_env() {
   [[ ! -e "${1}" ]] && { error "${1} does not exist"; return 1; }
   [[ ! -f "${1}" ]] && { error "${1} is not a file"; return 2; }
   file="$(realpath "${1}")"
-  # shellcheck disable=SC1090
-  . "${file}"
+  import "${file}"
 
   while read -r item; do
   	# Disabling shellcheck warning see https://github.com/koalaman/shellcheck/wiki/SC2163
