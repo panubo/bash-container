@@ -29,6 +29,13 @@ jobs:
           echo "NOTES: ${NOTES}"
           echo "::set-output name=notes::${NOTES}"
 
+      - name: Get Package SHA
+        id: get_package_sha
+        run: |
+          SHA=$(sha256sum rendered/panubo-functions.tar.gz)
+          echo "SHA: ${SHA}"
+          echo "::set-output name=sha::${SHA}"
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -41,6 +48,9 @@ jobs:
             Changes since last release:
 
             ${{ steps.get_release_notes.outputs.notes }}
+
+            -----
+            ${{ steps.get_package_sha.outputs.sha }}
           draft: true
           prerelease: false
 
