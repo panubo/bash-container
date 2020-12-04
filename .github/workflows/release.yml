@@ -50,7 +50,7 @@ jobs:
             ${{ steps.get_release_notes.outputs.notes }}
 
             -----
-            ${{ steps.get_package_sha.outputs.sha }}
+            SHA256: ${{ steps.get_package_sha.outputs.sha }}
           draft: true
           prerelease: false
 
