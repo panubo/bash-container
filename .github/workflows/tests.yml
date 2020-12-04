@@ -2,6 +2,8 @@ name: CI Tests
 
 on:
   push:
+    tags:
+      - '!v*'  # don't trigger on release tags
 
 jobs:
   test_debian:
