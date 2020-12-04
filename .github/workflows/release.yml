@@ -21,6 +21,9 @@ jobs:
         id: get_release_notes
         run: |
           NOTES=$(git log --pretty=format:%s $(git tag --sort=-refname | head -1)...$(git tag --sort=-refname | head -2 | tail -1) | awk '{ print "-", $0  }')
+          NOTES="${NOTES//'%'/'%25'}"
+          NOTES="${NOTES//$'\n'/'%0A'}"
+          NOTES="${NOTES//$'\r'/'%0D'}"
           echo "::set-output name=notes::${NOTES}"
 
       - name: Create Release
@@ -30,8 +33,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: ${{ steps.get_release_notes.outputs.notes }}
+          release_name: ${{ github.ref }}
+          body: |
+            Release notes...
+            ${{ steps.get_release_notes.outputs.notes }}
           draft: true
           prerelease: false
 
