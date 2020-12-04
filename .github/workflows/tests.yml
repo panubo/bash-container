@@ -8,22 +8,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Build Debian Linux
-      run: make build-docker
+      - name: Build Debian Linux
+        run: make build-docker
 
-    - name: Test Debian Linux
-      run: make test-docker
+      - name: Test Debian Linux
+        run: make test-docker
 
   test_alpine:
     runs-on: ubuntu-latest
     steps:
 
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Build Alpine Linux
-      run: make build-docker-alpine
+      - name: Build Alpine Linux
+        run: make build-docker-alpine
 
-    - name: Test Alpine Linux
-      run: make test-docker-alpine
+      - name: Test Alpine Linux
+        run: make test-docker-alpine
