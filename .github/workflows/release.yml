@@ -24,6 +24,7 @@ jobs:
           NOTES="${NOTES//'%'/'%25'}"
           NOTES="${NOTES//$'\n'/'%0A'}"
           NOTES="${NOTES//$'\r'/'%0D'}"
+          echo "NOTES: ${NOTES}"
           echo "::set-output name=notes::${NOTES}"
 
       - name: Create Release
