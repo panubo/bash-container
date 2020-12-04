@@ -4,7 +4,7 @@ on:
   push:
 
 jobs:
-  test:
+  test_debian:
     runs-on: ubuntu-latest
     steps:
 
@@ -13,11 +13,17 @@ jobs:
     - name: Build Debian Linux
       run: make build-docker
 
-    - name: Build Alpine Linux
-      run: make build-docker-alpine
-
     - name: Test Debian Linux
       run: make test-docker
+
+  test_alpine:
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Build Alpine Linux
+      run: make build-docker-alpine
 
     - name: Test Alpine Linux
       run: make test-docker-alpine
