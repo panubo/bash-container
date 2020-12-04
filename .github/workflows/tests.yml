@@ -3,13 +3,18 @@ name: CI Tests
 on:
   push:
 
-
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
 
     - uses: actions/checkout@v2
+
+    - name: Build Debian Linux
+      run: make build-docker
+
+    - name: Build Alpine Linux
+      run: make build-docker-alpine
 
     - name: Test Debian Linux
       run: make test-docker
