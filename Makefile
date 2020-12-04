@@ -27,14 +27,17 @@ run-docker: build-docker
 run-docker-alpine: build-docker-alpine
 	docker run --rm -it -v $(shell pwd):/src --workdir /src panubo/bash-container-alpine
 
-test-docker: build-docker
+test-docker:
 	docker run --rm -i -v $(shell pwd):/src --workdir /src --user user panubo/bash-container make test shellcheck
 
-test-docker-alpine: build-docker-alpine
+test-docker-alpine:
 	docker run --rm -i -v $(shell pwd):/src --workdir /src panubo/bash-container-alpine make test shellcheck
 
 test:
 	./test.sh
 
-shellcheck: rendered/panubo-functions.sh
-	shellcheck rendered/panubo-functions.sh
+shellcheck:
+	$(eval tmpdir := $(shell mktemp -d))
+	cat functions/* > $(tmpdir)/panubo-functions.sh
+	shellcheck $(tmpdir)/panubo-functions.sh
+	rm -rf $(tmpdir)
