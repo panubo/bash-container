@@ -11,7 +11,7 @@ RUN set -x \
 
 RUN set -x \
   && apt-get update \
-  && apt-get install -y --no-install-recommends curl ca-certificates git wget procps xz-utils make sudo realpath \
+  && apt-get install -y --no-install-recommends curl ca-certificates git wget procps xz-utils make sudo realpath vim \
   && useradd -m -s /bin/bash -G sudo user \
   && sed -i 's/^%sudo.*/%sudo ALL=(ALL:ALL) NOPASSWD:ALL/' /etc/sudoers \
   ;
@@ -46,5 +46,3 @@ RUN set -x \
   && cd bats-core \
   && ./install.sh /usr/local \
   ;
-
-COPY rendered/panubo-functions.sh /panubo-functions.sh

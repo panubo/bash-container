@@ -1,0 +1,66 @@
+on:
+  push:
+    tags:
+      - 'v*'
+
+name: Create Release
+
+jobs:
+  build:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Build Package
+        run: make rendered/panubo-functions.tar.gz
+
+      - name: Get Release Notes
+        id: get_release_notes
+        run: |
+          NOTES=$(git log --pretty=format:%s $(git tag --sort=-refname | head -1)...$(git tag --sort=-refname | head -2 | tail -1) | awk '{ print "-", $0  }')
+          NOTES="${NOTES//'%'/'%25'}"
+          NOTES="${NOTES//$'\n'/'%0A'}"
+          NOTES="${NOTES//$'\r'/'%0D'}"
+          echo "NOTES: ${NOTES}"
+          echo "::set-output name=notes::${NOTES}"
+
+      - name: Get Package SHA
+        id: get_package_sha
+        run: |
+          SHA=$(sha256sum rendered/panubo-functions.tar.gz)
+          echo "SHA: ${SHA}"
+          echo "::set-output name=sha::${SHA}"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          body: |
+            Changes since last release:
+
+            ${{ steps.get_release_notes.outputs.notes }}
+
+            -----
+            SHA256: ${{ steps.get_package_sha.outputs.sha }}
+          draft: true
+          prerelease: false
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./rendered/panubo-functions.tar.gz
+          asset_name: panubo-functions.tar.gz
+          asset_content_type: application/x-gzip

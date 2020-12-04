@@ -4,7 +4,7 @@ source ../functions/10-common.sh
 source ../functions/run_all.sh
 
 @test "run_all: run all commands" {
-  run run_all Commandfile.onetwothree
+  run run_all inputs/Commandfile.onetwothree
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = 'Running task one: echo "Command 1"' ]
   [ "${lines[1]}" = 'Command 1' ]
@@ -15,19 +15,19 @@ source ../functions/run_all.sh
 }
 
 @test "run_all: run fail command" {
-  run run_all Commandfile.fail
+  run run_all inputs/Commandfile.fail
   [ "$status" -eq 1 ]
   [ "${lines[0]}" = 'Running task fail: false' ]
   [ "${lines[1]}" = '' ]
 }
 
 @test "run_all: command not found" {
-  run run_all Commandfile.empty
+  run run_all inputs/Commandfile.empty
   [ "$status" -eq 127 ]
 }
 
 @test "run_all: Commandfile not exist" {
-  run run_all Commandfile.notexist
+  run run_all inputs/Commandfile.notexist
   [ "$status" -eq 2 ]
   [ "${lines[0]}" = '' ]
 }

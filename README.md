@@ -1,6 +1,5 @@
 # Bash Container
 
-[![CircleCI](https://circleci.com/gh/panubo/bash-container.svg?style=svg)](https://circleci.com/gh/panubo/bash-container)
 [![Status](https://img.shields.io/badge/status-BETA-yellow.svg)]()
 
 Common container Bash functions. All functions are tested and checked against [ShellCheck](https://github.com/koalaman/shellcheck).
