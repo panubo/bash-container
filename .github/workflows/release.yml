@@ -22,14 +22,6 @@ jobs:
       - name: Get Release Notes
         id: get_release_notes
         run: |
-          git log --pretty=format:%s $(git tag --sort=-refname | head -1)...$(git tag --sort=-refname | head -2 | tail -1) | awk '{ print "-", $0  }'
-
-          git log --pretty=format:%s
-          git --version
-
-          pwd
-          ls
-
           NOTES=$(git log --pretty=format:%s $(git tag --sort=-refname | head -1)...$(git tag --sort=-refname | head -2 | tail -1) | awk '{ print "-", $0  }')
           NOTES="${NOTES//'%'/'%25'}"
           NOTES="${NOTES//$'\n'/'%0A'}"
@@ -46,7 +38,8 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
           body: |
-            Release notes...
+            Changes since last release:
+
             ${{ steps.get_release_notes.outputs.notes }}
           draft: true
           prerelease: false
