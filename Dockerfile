@@ -46,5 +46,3 @@ RUN set -x \
   && cd bats-core \
   && ./install.sh /usr/local \
   ;
-
-COPY rendered/panubo-functions.sh /panubo-functions.sh
