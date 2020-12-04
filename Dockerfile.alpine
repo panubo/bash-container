@@ -3,7 +3,7 @@ FROM docker.io/alpine:latest
 # This Dockerfile is intended for testing and development of panubo-functions.sh and is not for distribution of panubo-functions.sh
 
 RUN set -x \
-  && apk add --no-cache curl ca-certificates git wget bash xz coreutils make tzdata \
+  && apk add --no-cache curl ca-certificates git wget bash xz coreutils make tzdata vim \
   ;
 
 ENV PS1 '\u@\h:\w\$ '

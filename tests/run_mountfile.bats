@@ -2,23 +2,25 @@
 
 export BATS_SUDO=true
 
+input_dir="$(pwd)/inputs"
+
 @test "run_mountfile: test defaults" {
   [[ $EUID -eq 0 ]] && mkdir -p /srv/remote || sudo mkdir -p /srv/remote
-  run ./_test.sh run_mountfile
+  run ./_test.sh run_mountfile ${input_dir}/Mountfile
   echo "output = ${output}" # log output on test failure
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = '' ]
 }
 
 @test "run_mountfile: mountfile does not exist" {
-  run ./_test.sh run_mountfile Mountfile.doesntexist
+  run ./_test.sh run_mountfile ${input_dir}/Mountfile.doesntexist
   echo "output = ${output}" # log output on test failure
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = 'Mountfile not found' ]
 }
 
 @test "run_mountfile: datadir does not exist" {
-  run ./_test.sh run_mountfile Mountfile.simple doesntexist
+  run ./_test.sh run_mountfile ${input_dir}/Mountfile.simple doesntexist
   echo "output = ${output}" # log output on test failure
   [ "$status" -eq 1 ]
   [ "${lines[0]}" = 'Data dir not found' ]
@@ -29,7 +31,7 @@ export BATS_SUDO=true
   mountfile="Mountfile.simple"
   tmpdir=$(mktemp -d)
   mkdir -p "${tmpdir}/data"
-  cp ${mountfile} ${tmpdir}
+  cp ${input_dir}/${mountfile} ${tmpdir}
 
   # run test
   run ./_test.sh run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
@@ -58,7 +60,7 @@ export BATS_SUDO=true
   mountfile="Mountfile.simple"
   tmpdir=$(mktemp -d)
   mkdir -p "${tmpdir}/data"
-  cp ${mountfile} ${tmpdir}
+  cp ${input_dir}/${mountfile} ${tmpdir}
 
   # templated content
   mkdir -p "${tmpdir}/content-uploads/1"
@@ -101,7 +103,7 @@ export BATS_SUDO=true
   mountfile="Mountfile.complex"
   tmpdir=$(mktemp -d)
   mkdir -p "${tmpdir}/data"
-  cp ${mountfile} ${tmpdir}
+  cp ${input_dir}/${mountfile} ${tmpdir}
 
   # run test
   run ./_test.sh run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
@@ -123,7 +125,7 @@ export BATS_SUDO=true
   mountfile="Mountfile.ephemeral"
   tmpdir=$(mktemp -d)
   mkdir -p "${tmpdir}/data"
-  cp ${mountfile} ${tmpdir}
+  cp ${input_dir}/${mountfile} ${tmpdir}
 
   # run test
   run ./_test.sh run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
@@ -143,7 +145,7 @@ export BATS_SUDO=true
 
 @test "run_mountfile: target outside working" {
   # setup
-  mountfile="Mountfile.outsideworking"
+  mountfile="${input_dir}/Mountfile.outsideworking"
   tmpdir=$(mktemp -d)
   mkdir -p "${tmpdir}/data"
 
@@ -160,7 +162,7 @@ export BATS_SUDO=true
   mountfile="Mountfile.outsidedata"
   tmpdir=$(mktemp -d)
   mkdir -p "${tmpdir}/data"
-  cp ${mountfile} ${tmpdir}
+  cp ${input_dir}/${mountfile} ${tmpdir}
 
   # run test
   run ./_test.sh run_mountfile ${tmpdir}/${mountfile} "${tmpdir}/data"
@@ -178,7 +180,7 @@ export BATS_SUDO=true
   mountfile="Mountfile.simple"
   tmpdir=$(mktemp -d)
   mkdir -p "${tmpdir}/data"
-  cp ${mountfile} ${tmpdir}
+  cp ${input_dir}/${mountfile} ${tmpdir}
 
   # run test
   run ./_test.sh run_mountfile ${tmpdir}/${mountfile} ${tmpdir}/data
