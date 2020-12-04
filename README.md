@@ -1,5 +1,6 @@
 # Bash Container
 
+[![CI Tests](https://github.com/panubo/bash-container/workflows/CI%20Tests/badge.svg)](https://github.com/panubo/bash-container/actions)
 [![Status](https://img.shields.io/badge/status-BETA-yellow.svg)]()
 
 Common container Bash functions. All functions are tested and checked against [ShellCheck](https://github.com/koalaman/shellcheck).
