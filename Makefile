@@ -28,10 +28,10 @@ run-docker-alpine: build-docker-alpine
 	docker run --rm -it -v $(shell pwd):/src --workdir /src panubo/bash-container-alpine
 
 test-docker: build-docker
-	docker run --rm -it -v $(shell pwd):/src --workdir /src --user user panubo/bash-container make test shellcheck
+	docker run --rm -i -v $(shell pwd):/src --workdir /src --user user panubo/bash-container make test shellcheck
 
 test-docker-alpine: build-docker-alpine
-	docker run --rm -it -v $(shell pwd):/src --workdir /src panubo/bash-container-alpine make test shellcheck
+	docker run --rm -i -v $(shell pwd):/src --workdir /src panubo/bash-container-alpine make test shellcheck
 
 test:
 	./test.sh
