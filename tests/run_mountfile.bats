@@ -16,14 +16,14 @@ input_dir="$(pwd)/inputs"
   run ./_test.sh run_mountfile ${input_dir}/Mountfile.doesntexist
   echo "output = ${output}" # log output on test failure
   [ "$status" -eq 0 ]
-  [ "${lines[0]}" = 'Mountfile not found' ]
+  [ "${lines[0]}" = 'Error: Mountfile not found' ]
 }
 
 @test "run_mountfile: datadir does not exist" {
   run ./_test.sh run_mountfile ${input_dir}/Mountfile.simple doesntexist
   echo "output = ${output}" # log output on test failure
   [ "$status" -eq 1 ]
-  [ "${lines[0]}" = 'Data dir not found' ]
+  [ "${lines[0]}" = 'Error: Data dir not found' ]
 }
 
 @test "run_mountfile: mount (simple)" {

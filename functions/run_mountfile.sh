@@ -11,9 +11,9 @@ run_mountfile() {
   local target_dir=""
   local working_dir=""
 
-  if [[ $EUID -ne 0 ]]; then echo "Must be run as root"; return 1; fi
-  if [[ ! -e "${mountfile}" ]]; then echo "Mountfile not found"; return 0; fi
-  if [[ ! -e "${data_dir}" ]]; then echo "Data dir not found"; return 1; fi
+  if [[ $EUID -ne 0 ]]; then error "Must be run as root"; return 1; fi
+  if [[ ! -e "${mountfile}" ]]; then error "Mountfile not found"; return 0; fi
+  if [[ ! -e "${data_dir}" ]]; then error "Data dir not found"; return 1; fi
 
   # normalise path to Mountfile
   mountfile="$(realpath "${mountfile}")"
@@ -60,7 +60,7 @@ run_mountfile() {
 
     # Copy mount to remote, if remote is empty, and target_dir has files
     if [[ "$(ls -A "${target_dir}")" ]] && [[ ! "$(ls -A "${source_dir}")" ]]; then
-      echo "Copying template content ${target_dir} => ${source_dir}"
+      (>&1 echo "Copying template content ${target_dir} => ${source_dir}")
       # gnu cp does not respect trainling / with -a, so we remove the dir
       rmdir "${source_dir}"
       cp -a "${target_dir}/" "${source_dir}"
