@@ -23,17 +23,17 @@ wait_tcp() {
 }
 
 wait_mariadb() {
-  wait_tcp "${1}" 3306
+  wait_tcp "${1}" "${2:-3306}"
 }
 
 wait_postgres() {
-  wait_tcp "${1}" 5432
+  wait_tcp "${1}" "${2:-5432}"
 }
 
 wait_rabbitmq() {
-  wait_tcp "${1}" 5672
+  wait_tcp "${1}" "${2:-5672}"
 }
 
 wait_redis() {
-  wait_tcp "${1}" 6379
+  wait_tcp "${1}" "${2:-6379}"
 }

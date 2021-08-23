@@ -26,13 +26,13 @@ wait_tcp_multi() {
 }
 
 wait_multi_rabbitmq() {
-  wait_tcp_multi "${1}" "${2}" 5672
+  wait_tcp_multi "${1}" "${2}" "${3:-5672}"
 }
 
 wait_multi_redis() {
-  wait_tcp_multi "${1}" "${2}" 6379
+  wait_tcp_multi "${1}" "${2}" "${3:-6379}"
 }
 
 wait_multi_elasticsearch() {
-  wait_tcp_multi "${1}" "${2}" 9200
+  wait_tcp_multi "${1}" "${2}" "${3:-9200}"
 }
