@@ -1,3 +1,5 @@
+# set_timezone [TIMEZONE]
+# set_timezone Australia/Sydney
 set_timezone() {
   TZ="${1:-Etc/UTC}"
   if [[ ! -e "/usr/share/zoneinfo/${TZ}" ]]; then

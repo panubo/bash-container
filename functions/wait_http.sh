@@ -1,4 +1,5 @@
 # wait_http URL [TIMEOUT] [HTTP TIMEOUT]
+# wait_http http://example.com 30 2
 wait_http() {
   # Wait for http service to be available
   command -v curl >/dev/null 2>&1 || { error "This function requires curl to be installed."; return 1; }
