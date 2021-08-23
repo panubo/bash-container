@@ -7,7 +7,7 @@ Common container Bash functions. All functions are tested and checked against [S
 
 ## Install
 
-The Panubo functions require bash, curl and coreutils, this takes about 10M of space.
+The Panubo functions require bash, curl and coreutils. These take about 10M of space.
 
 ### Debian
 
