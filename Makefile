@@ -12,26 +12,32 @@ rendered/panubo-functions.tar.gz: rendered/panubo-functions.sh
 rendered/panubo-functions.tar.gz.asc: rendered/panubo-functions.tar.gz
 	gpg2 --default-key $(GIT_EMAIL) --output rendered/panubo-functions.tar.gz.asc --armor --detach-sig rendered/panubo-functions.tar.gz
 
-.PHONY: sign build-docker build-docker-alpine run-docker run-docker-alpine test-docker test-docker-alpine test shellcheck
+.PHONY: sign build-docker-debian build-docker-alpine run-docker-debian run-docker-alpine test-docker-debian test-docker-alpine build-example-debian build-example-alpine test shellcheck
 sign: rendered/panubo-functions.tar.gz.asc
 
-build-docker:
-	docker build -f Dockerfile -t panubo/bash-container .
+build-docker-debian:
+	docker build -f Dockerfile.debian -t panubo/bash-container-debian .
 
 build-docker-alpine:
 	docker build -f Dockerfile.alpine -t panubo/bash-container-alpine .
 
-run-docker: build-docker
-	docker run --rm -it -v $(shell pwd):/src --workdir /src --user user panubo/bash-container
+run-docker-debian: build-docker-debian
+	docker run --rm -it -v $(shell pwd):/src --workdir /src --user user panubo/bash-container-debian
 
 run-docker-alpine: build-docker-alpine
 	docker run --rm -it -v $(shell pwd):/src --workdir /src panubo/bash-container-alpine
 
-test-docker:
-	docker run --rm -i -v $(shell pwd):/src --workdir /src --user user panubo/bash-container make test shellcheck
+test-docker-debian:
+	docker run --rm -i -v $(shell pwd):/src --workdir /src --user user panubo/bash-container-debian make test shellcheck
 
 test-docker-alpine:
 	docker run --rm -i -v $(shell pwd):/src --workdir /src panubo/bash-container-alpine make test shellcheck
+
+build-example-debian:
+	docker build -f Dockerfile.debian-install -t panubo/bash-container-debian-example .
+
+build-example-alpine:
+	docker build -f Dockerfile.alpine-install -t panubo/bash-container-alpine-example .
 
 test:
 	./test.sh
