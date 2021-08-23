@@ -3,11 +3,11 @@
 [![CI Tests](https://github.com/panubo/bash-container/workflows/CI%20Tests/badge.svg)](https://github.com/panubo/bash-container/actions)
 [![Status](https://img.shields.io/badge/status-BETA-yellow.svg)]()
 
-Common container Bash functions. All functions are tested and checked against [ShellCheck](https://github.com/koalaman/shellcheck).
+Common container Bash functions. All functions are [Bats](https://github.com/bats-core/bats-core) tested and checked against [ShellCheck](https://github.com/koalaman/shellcheck).
 
 ## Install
 
-The Panubo functions require bash, curl and coreutils. These take about 10M of space.
+The functions require bash, curl and coreutils. These take about 10M of space.
 
 ### Debian
 
