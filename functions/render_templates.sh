@@ -14,7 +14,7 @@ render_templates() {
     gomplate < "${item}" > "${tempfile}" || { rm "${tempfile}" 2>/dev/null; error "Failed to render template ${item}."; return 1; }
     mv "${tempfile}" "${item/%\.tmpl/}"
     chmod "${permissions}" "${item/%\.tmpl/}"
-    
+
     if [[ "${DEBUG:-false}" == 'true' ]]; then
       echo "==> ${item/%\.tmpl/} <=="
       cat "${item/%\.tmpl/}"
