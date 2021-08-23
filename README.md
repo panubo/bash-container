@@ -52,6 +52,29 @@ RUN set -x \
   ;
 ```
 
+## Example Entrypoint Usage
+
+The functions are used within a Docker entrypoint script to simplify container initialization and abstract entrypoints. This example also uses a [Mountfile](https://github.com/voltgrid/voltgrid-pie/blob/master/docs/mountfile.md) and [Procfile](https://devcenter.heroku.com/articles/procfile#procfile-format).
+
+```shell
+#!/usr/bin/env bash
+
+set -e
+
+source /panubo-functions.sh
+
+# Wait for services
+wait_mariadb "${DB_HOST}" "${DB_PORT:-3306}"
+
+# Mount data mounts (specifying an alternate mount point uid/gid)
+MOUNTFILE_MOUNT_UID=33
+MOUNTFILE_MOUNT_GID=33
+run_mountfile
+
+# Exec Procfile command, or if not found in Procfile execute the command passed to the entrypoint
+exec_procfile "${1}" || exec "$@"
+```
+
 ## Bash Strict Mode
 
 Although we like [Unofficial Bash Strict Mode](http://redsymbol.net/articles/unofficial-bash-strict-mode/) not all of these functions currently work under strict mode.
