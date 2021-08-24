@@ -7,7 +7,7 @@ Common container Bash functions. All functions are [Bats](https://github.com/bat
 
 ## Install
 
-The functions require bash, curl and coreutils. These take about 10M of space.
+The main functions require bash, curl and coreutils. These take about 10M of space. The template function requires gomplate.
 
 ### Debian
 
