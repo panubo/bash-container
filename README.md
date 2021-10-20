@@ -56,7 +56,9 @@ RUN set -x \
 
 ## Example Entrypoint Usage
 
-The functions are used within a Docker entrypoint script to simplify container initialization and abstract entrypoints. This example also uses a [Mountfile](https://github.com/voltgrid/voltgrid-pie/blob/master/docs/mountfile.md) and [Procfile](https://devcenter.heroku.com/articles/procfile#procfile-format).
+The functions are used within a Docker entrypoint script to simplify container initialization and abstract entrypoints. 
+
+This example also uses a [Mountfile](https://github.com/voltgrid/voltgrid-pie/blob/master/docs/mountfile.md) and [Procfile](https://devcenter.heroku.com/articles/procfile#procfile-format).
 
 ```shell
 #!/usr/bin/env bash
