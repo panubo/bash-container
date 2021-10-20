@@ -3,7 +3,9 @@
 [![CI Tests](https://github.com/panubo/bash-container/workflows/CI%20Tests/badge.svg)](https://github.com/panubo/bash-container/actions)
 [![Status](https://img.shields.io/badge/status-STABLE-green.svg)]()
 
-Common container Bash functions. All functions are [Bats](https://github.com/bats-core/bats-core) tested and checked against [ShellCheck](https://github.com/koalaman/shellcheck).
+Common container Bash functions used for handling Docker image entrypoint semantics.
+
+All functions are [Bats](https://github.com/bats-core/bats-core) tested and checked against [ShellCheck](https://github.com/koalaman/shellcheck).
 
 ## Install
 
