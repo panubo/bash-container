@@ -134,7 +134,7 @@ set -e
 
 source /panubo-functions.sh
 
-render_template /foo.conf.tmpl
+render_templates /foo.conf.tmpl
 ```
 
 This will render `/foo.conf.tmpl` to `/foo.conf`.
