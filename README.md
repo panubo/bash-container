@@ -54,9 +54,9 @@ RUN set -x \
   ;
 ```
 
-## Example Entrypoint Usage
+## Example Usage
 
-The functions are used within a Docker entrypoint script to simplify container initialization and abstract entrypoints. 
+The functions are used within a Docker entrypoint script to simplify container initialization and abstract entrypoints.
 
 This example also uses a [Mountfile](https://github.com/voltgrid/voltgrid-pie/blob/master/docs/mountfile.md) and [Procfile](https://devcenter.heroku.com/articles/procfile#procfile-format).
 
@@ -78,6 +78,64 @@ run_mountfile
 # Exec Procfile command, or if not found in Procfile execute the command passed to the entrypoint
 exec_procfile "${1}" || exec "$@"
 ```
+
+```
+# Try to run a procfile command
+exec_procfile "$1"
+
+# exec_procfile returns 127 if the command isn't in the Procfile
+if [ "$?" -eq "127" ]; then
+	exec "${@}"
+fi
+
+```
+
+### Using gomplate templating
+
+Add to your `Dockerfile`, to install gomplate (Debian example):
+
+```
+# Install gomplate
+RUN set -x \
+  && GOMPLATE_VERSION=v3.6.0 \
+  && GOMPLATE_CHECKSUM=0867b2d6b23c70143a4ea37705d4308d051317dd0532d7f3063acec21f6cbbc8 \
+  && if ! command -v wget > /dev/null; then \
+      fetchDeps="${fetchDeps} wget"; \
+     fi \
+  && apt-get update \
+  && apt-get install -y --no-install-recommends ca-certificates ${fetchDeps} \
+  && wget -nv -O /tmp/gomplate_linux-amd64-slim -L https://github.com/hairyhenderson/gomplate/releases/download/${GOMPLATE_VERSION}/gomplate_linux-amd64-slim \
+  && echo "${GOMPLATE_CHECKSUM}  gomplate_linux-amd64-slim" > /tmp/SHA256SUM \
+  && ( cd /tmp; sha256sum -c SHA256SUM; ) \
+  && mv /tmp/gomplate_linux-amd64-slim /usr/local/bin/gomplate \
+  && chmod +x /usr/local/bin/gomplate \
+  && rm -rf /tmp/* \
+  && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false ${fetchDeps} \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* \
+  ;
+```
+
+A minimal template (`/foo.conf.tmpl`):
+
+```
+# Template example
+FOO={{ getenv "MYAPP_FOO" "default_foo_value" }}
+```
+
+A minimal entrypoint script:
+
+```shell
+#!/usr/bin/env bash
+
+set -e
+
+source /panubo-functions.sh
+
+render_template /foo.conf.tmpl
+```
+
+This will render `/foo.conf.tmpl` to `/foo.conf`.
 
 ## Bash Strict Mode
 
