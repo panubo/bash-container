@@ -13,7 +13,7 @@ The main functions require bash, curl and coreutils. These take about 10M of spa
 
 ### Debian
 
-```
+```Dockerfile
 RUN set -x \
   && BASHCONTAINER_VERSION=0.7.1 \
   && BASHCONTAINER_SHA256=e13b1930e75aa4c5526820b5c7ec4f3530bdcfda45752bcf8dfef193d4624977 \
@@ -36,7 +36,7 @@ RUN set -x \
 
 ### Alpine
 
-```
+```Dockerfile
 RUN set -x \
   && BASHCONTAINER_VERSION=0.7.1 \
   && BASHCONTAINER_SHA256=e13b1930e75aa4c5526820b5c7ec4f3530bdcfda45752bcf8dfef193d4624977 \
@@ -79,7 +79,9 @@ run_mountfile
 exec_procfile "${1}" || exec "$@"
 ```
 
-```
+Alternate Procfile handling:
+
+```shell
 # Try to run a procfile command
 exec_procfile "$1"
 
@@ -94,7 +96,7 @@ fi
 
 Add to your `Dockerfile`, to install gomplate (Debian example):
 
-```
+```Dockerfile
 # Install gomplate
 RUN set -x \
   && GOMPLATE_VERSION=v3.6.0 \
