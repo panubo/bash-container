@@ -9,7 +9,7 @@ All functions are [Bats](https://github.com/bats-core/bats-core) tested and chec
 
 ## Install
 
-The main functions require bash, curl and coreutils. These take about 10M of space. The template function requires gomplate.
+The main functions require bash, curl and coreutils. These take about 10M of space. The template function requires [gomplate](https://github.com/hairyhenderson/gomplate/).
 
 ### Debian
 
