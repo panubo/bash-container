@@ -102,14 +102,14 @@ Add to your `Dockerfile`, to install gomplate (Debian example):
 # Install gomplate
 RUN set -x \
   && GOMPLATE_VERSION=3.8.0 \
-  && GOMPLATE_CHECKSUM=13b39916b11638b65f954fab10815e146bad3a615f14ba2025a375faf0d1107e \
+  && GOMPLATE_SHA256=13b39916b11638b65f954fab10815e146bad3a615f14ba2025a375faf0d1107e \
   && if ! command -v wget > /dev/null; then \
       fetchDeps="${fetchDeps} wget"; \
      fi \
   && apt-get update \
   && apt-get install -y --no-install-recommends ca-certificates ${fetchDeps} \
   && wget -nv -O /tmp/gomplate_linux-amd64-slim -L https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64-slim \
-  && echo "${GOMPLATE_CHECKSUM}  gomplate_linux-amd64-slim" > /tmp/SHA256SUM \
+  && echo "${GOMPLATE_SHA256}  gomplate_linux-amd64-slim" > /tmp/SHA256SUM \
   && ( cd /tmp; sha256sum -c SHA256SUM; ) \
   && mv /tmp/gomplate_linux-amd64-slim /usr/local/bin/gomplate \
   && chmod +x /usr/local/bin/gomplate \
@@ -124,12 +124,12 @@ Or add to your `Dockerfile`, to install gomplate (Alpine example):
 
 ```Dockerfile
 ENV GOMPLATE_VERSION=3.8.0
-ENV GOMPLATE_CHECKSUM=13b39916b11638b65f954fab10815e146bad3a615f14ba2025a375faf0d1107e
+ENV GOMPLATE_SHA256=13b39916b11638b65f954fab10815e146bad3a615f14ba2025a375faf0d1107e
 
 RUN set -x \
   && cd /tmp \
   && wget -nv https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64 \
-  && echo "${GOMPLATE_CHECKSUM}  gomplate_linux-amd64" > /tmp/SHA256SUM \
+  && echo "${GOMPLATE_SHA256}  gomplate_linux-amd64" > /tmp/SHA256SUM \
   && ( cd /tmp; sha256sum -c SHA256SUM || ( echo "Expected $(sha256sum gomplate_linux-amd64)"; exit 1; )) \
   && chmod +x gomplate_linux-amd64 \
   && mv gomplate_linux-amd64 /usr/local/bin/gomplate \
