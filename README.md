@@ -102,7 +102,7 @@ Add to your `Dockerfile`, to install gomplate (Debian example):
 # Install gomplate
 RUN set -x \
   && GOMPLATE_VERSION=3.8.0 \
-  && GOMPLATE_SHA256=13b39916b11638b65f954fab10815e146bad3a615f14ba2025a375faf0d1107e \
+  && GOMPLATE_SHA256=847f7d9fc0dc74c33188c2b0d0e9e4ed9204f67c36da5aacbab324f8bfbf29c9 \
   && if ! command -v wget > /dev/null; then \
       fetchDeps="${fetchDeps} wget"; \
      fi \
@@ -124,7 +124,7 @@ Or add to your `Dockerfile`, to install gomplate (Alpine example):
 
 ```Dockerfile
 ENV GOMPLATE_VERSION=3.8.0
-ENV GOMPLATE_SHA256=13b39916b11638b65f954fab10815e146bad3a615f14ba2025a375faf0d1107e
+ENV GOMPLATE_SHA256=847f7d9fc0dc74c33188c2b0d0e9e4ed9204f67c36da5aacbab324f8bfbf29c9
 
 RUN set -x \
   && cd /tmp \
