@@ -14,6 +14,7 @@ The main functions require bash, curl and coreutils. These take about 10M of spa
 ### Debian
 
 ```Dockerfile
+# Install bash-container functions
 RUN set -x \
   && BASHCONTAINER_VERSION=0.7.1 \
   && BASHCONTAINER_SHA256=e13b1930e75aa4c5526820b5c7ec4f3530bdcfda45752bcf8dfef193d4624977 \
@@ -37,6 +38,7 @@ RUN set -x \
 ### Alpine
 
 ```Dockerfile
+# Install bash-container functions
 RUN set -x \
   && BASHCONTAINER_VERSION=0.7.1 \
   && BASHCONTAINER_SHA256=e13b1930e75aa4c5526820b5c7ec4f3530bdcfda45752bcf8dfef193d4624977 \
