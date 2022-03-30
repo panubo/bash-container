@@ -27,7 +27,7 @@ RUN set -x \
   && wget -nv https://github.com/panubo/bash-container/releases/download/v${BASHCONTAINER_VERSION}/panubo-functions.tar.gz \
   && echo "${BASHCONTAINER_SHA256}  panubo-functions.tar.gz" > /tmp/SHA256SUM \
   && ( cd /tmp; sha256sum -c SHA256SUM || ( echo "Expected $(sha256sum panubo-functions.tar.gz)"; exit 1; )) \
-  && tar -C / -zxf panubo-functions.tar.gz \
+  && tar --no-same-owner -C / -zxf panubo-functions.tar.gz \
   && rm -rf /tmp/* \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false ${fetchDeps} \
   && apt-get clean \
@@ -50,7 +50,7 @@ RUN set -x \
   && wget -nv https://github.com/panubo/bash-container/releases/download/v${BASHCONTAINER_VERSION}/panubo-functions.tar.gz \
   && echo "${BASHCONTAINER_SHA256}  panubo-functions.tar.gz" > /tmp/SHA256SUM \
   && ( cd /tmp; sha256sum -c SHA256SUM || ( echo "Expected $(sha256sum panubo-functions.tar.gz)"; exit 1; )) \
-  && tar -C / -zxf panubo-functions.tar.gz \
+  && tar --no-same-owner -C / -zxf panubo-functions.tar.gz \
   && rm -rf /tmp/* \
   && apk del ${fetchDeps} \
   ;
