@@ -16,8 +16,8 @@ The main functions require bash, curl and coreutils. These take about 10M of spa
 ```Dockerfile
 # Install bash-container functions
 RUN set -x \
-  && BASHCONTAINER_VERSION=0.7.1 \
-  && BASHCONTAINER_SHA256=e13b1930e75aa4c5526820b5c7ec4f3530bdcfda45752bcf8dfef193d4624977 \
+  && BASHCONTAINER_VERSION=0.7.2 \
+  && BASHCONTAINER_SHA256=87c4b804f0323d8f0856cb4fbf2f7859174765eccc8b0ac2d99b767cecdcf5c6 \
   && if ! command -v wget > /dev/null; then \
       fetchDeps="${fetchDeps} wget"; \
      fi \
@@ -40,8 +40,8 @@ RUN set -x \
 ```Dockerfile
 # Install bash-container functions
 RUN set -x \
-  && BASHCONTAINER_VERSION=0.7.1 \
-  && BASHCONTAINER_SHA256=e13b1930e75aa4c5526820b5c7ec4f3530bdcfda45752bcf8dfef193d4624977 \
+  && BASHCONTAINER_VERSION=0.7.2 \
+  && BASHCONTAINER_SHA256=87c4b804f0323d8f0856cb4fbf2f7859174765eccc8b0ac2d99b767cecdcf5c6 \
   && if [ -n "$(readlink /usr/bin/wget)" ]; then \
       fetchDeps="${fetchDeps} wget"; \
      fi \
