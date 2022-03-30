@@ -42,7 +42,8 @@ input_dir="$(pwd)/inputs"
   printf "%s\n" "{{ .Env.DOESNOTEXIST }}" > ${tmpdir}/config.yaml.bad
   run render_templates ${tmpdir}/config.yaml.bad
   [ "$status" -eq 1 ]
-  [ "${lines[0]}" == 'Error: template: template:1:7: executing "template" at <.Env.DOESNOTEXIST>: map has no entry for key "DOESNOTEXIST"' ]
+  [[ "${lines[0]}" == "Rendering template ${tmpdir}/config.yaml.bad" ]]
+  [[ "${lines[1]}" == *"at <.Env.DOESNOTEXIST>: map has no entry for key"* ]]
   rm -rf ${tmpdir}
 }
 
