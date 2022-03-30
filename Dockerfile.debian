@@ -29,15 +29,24 @@ RUN set -x \
   && rm -rf /tmp/* \
   ;
 
+# Install gomplate
 RUN set -x \
-  && GOMPLATE_VERSION=2.2.0 \
-  && GOMPLATE_CHECKSUM=0e09e7cd6fb5e96858255a27080570624f72910e66be5152b77a2fd21d438dd7 \
+  && GOMPLATE_VERSION=3.8.0 \
+  && GOMPLATE_SHA256=847f7d9fc0dc74c33188c2b0d0e9e4ed9204f67c36da5aacbab324f8bfbf29c9 \
+  && if ! command -v wget > /dev/null; then \
+      fetchDeps="${fetchDeps} wget"; \
+     fi \
+  && apt-get update \
+  && apt-get install -y --no-install-recommends ca-certificates ${fetchDeps} \
   && wget -nv -O /tmp/gomplate_linux-amd64-slim -L https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64-slim \
-  && echo "${GOMPLATE_CHECKSUM}  gomplate_linux-amd64-slim" > /tmp/SHA256SUM \
+  && echo "${GOMPLATE_SHA256}  gomplate_linux-amd64-slim" > /tmp/SHA256SUM \
   && ( cd /tmp; sha256sum -c SHA256SUM; ) \
   && mv /tmp/gomplate_linux-amd64-slim /usr/local/bin/gomplate \
   && chmod +x /usr/local/bin/gomplate \
-  && rm -f /tmp/* \
+  && rm -rf /tmp/* \
+  && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false ${fetchDeps} \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* \
   ;
 
 RUN set -x \

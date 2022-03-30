@@ -123,10 +123,10 @@ RUN set -x \
 Or add to your `Dockerfile`, to install gomplate (Alpine example):
 
 ```Dockerfile
-ENV GOMPLATE_VERSION=3.8.0
-ENV GOMPLATE_SHA256=847f7d9fc0dc74c33188c2b0d0e9e4ed9204f67c36da5aacbab324f8bfbf29c9
-
+# Install gomplate
 RUN set -x \
+  && GOMPLATE_VERSION=3.8.0 \
+  && GOMPLATE_SHA256=847f7d9fc0dc74c33188c2b0d0e9e4ed9204f67c36da5aacbab324f8bfbf29c9 \
   && cd /tmp \
   && wget -nv https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64 \
   && echo "${GOMPLATE_SHA256}  gomplate_linux-amd64" > /tmp/SHA256SUM \
