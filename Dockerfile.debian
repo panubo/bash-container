@@ -1,4 +1,4 @@
-FROM docker.io/debian:stretch-slim
+FROM docker.io/debian:latest
 
 # This Dockerfile is intended for testing and development of panubo-functions.sh and is not for distribution of panubo-functions.sh
 
@@ -11,7 +11,7 @@ RUN set -x \
 
 RUN set -x \
   && apt-get update \
-  && apt-get install -y --no-install-recommends curl ca-certificates git wget procps xz-utils make sudo realpath vim \
+  && apt-get install -y --no-install-recommends curl ca-certificates git wget procps xz-utils make sudo vim \
   && useradd -m -s /bin/bash -G sudo user \
   && sed -i 's/^%sudo.*/%sudo ALL=(ALL:ALL) NOPASSWD:ALL/' /etc/sudoers \
   ;
@@ -49,9 +49,11 @@ RUN set -x \
   && rm -rf /var/lib/apt/lists/* \
   ;
 
+# Install Bats
 RUN set -x \
   && cd ~ \
   && git clone https://github.com/bats-core/bats-core.git \
   && cd bats-core \
+  && git checkout v1.10.0 \
   && ./install.sh /usr/local \
   ;

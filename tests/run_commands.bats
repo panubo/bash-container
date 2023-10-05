@@ -22,7 +22,8 @@ input_dir="$(pwd)/inputs"
 }
 
 @test "run_commands: non-existent-command as first argument" {
-  run run_commands ${input_dir}/Commandfile bash deploy1
+  bats_require_minimum_version 1.5.0
+  run -127 run_commands ${input_dir}/Commandfile bash deploy1
   [ "$status" -eq 127 ]
 }
 
@@ -36,22 +37,26 @@ input_dir="$(pwd)/inputs"
 }
 
 @test "run_commands: command not found" {
-  run run_commands ${input_dir}/Commandfile /bin/true
+  bats_require_minimum_version 1.5.0
+  run -127 run_commands ${input_dir}/Commandfile /bin/true
   [ "$status" -eq 127 ]
 }
 
 @test "run_commands: failure error code returned - command failed" {
-  run run_commands ${input_dir}/Commandfile fail
+  bats_require_minimum_version 1.5.0
+  run -1 run_commands ${input_dir}/Commandfile fail
   [ "$status" -eq 1 ]
 }
 
 @test "run_commands: failure error code returned - command not found, and none others run" {
-  run run_commands ${input_dir}/Commandfile unknown-command
+  bats_require_minimum_version 1.5.0
+  run -127 run_commands ${input_dir}/Commandfile unknown-command
   [ "$status" -eq "127" ]
 }
 
 @test "run_commands: failure error code returned - command not found, and others run" {
-  run run_commands ${input_dir}/Commandfile deploy1 unknown-command deploy2
+  bats_require_minimum_version 1.5.0
+  run -127 run_commands ${input_dir}/Commandfile deploy1 unknown-command deploy2
   [ "$status" -eq "127" ]
   [ "${lines[2]}" = 'Error: command unknown-command not found' ]
 }

@@ -1,4 +1,4 @@
-FROM docker.io/debian:stretch-slim
+FROM docker.io/debian:latest
 
 # This Dockerfile is an example of how to install the functions under Debian Linux
 

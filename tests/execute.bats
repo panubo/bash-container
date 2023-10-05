@@ -14,13 +14,15 @@ input_dir="$(pwd)/inputs"
 }
 
 @test "execute: run unknown command" {
-  run execute ${input_dir}/Commandfile unknown-command
+  bats_require_minimum_version 1.5.0
+  run -127 execute ${input_dir}/Commandfile unknown-command
   [ "$status" -eq 127 ]
   [ "$result" == '' ]
 }
 
 @test "execute: run unknown command empty" {
-  run execute ${input_dir}/Commandfile.empty unknown-command
+  bats_require_minimum_version 1.5.0
+  run -127 execute ${input_dir}/Commandfile.empty unknown-command
   [ "$status" -eq 127 ]
   [ "$result" == '' ]
 }

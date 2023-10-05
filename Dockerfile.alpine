@@ -35,9 +35,11 @@ RUN set -x \
   && rm -rf /tmp/* \
   ;
 
+# Install Bats
 RUN set -x \
   && cd ~ \
   && git clone https://github.com/bats-core/bats-core.git \
   && cd bats-core \
+  && git checkout v1.10.0 \
   && ./install.sh /usr/local \
   ;

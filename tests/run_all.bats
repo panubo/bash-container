@@ -15,19 +15,22 @@ source ../functions/run_all.sh
 }
 
 @test "run_all: run fail command" {
-  run run_all inputs/Commandfile.fail
+  bats_require_minimum_version 1.5.0
+  run -1 run_all inputs/Commandfile.fail
   [ "$status" -eq 1 ]
   [ "${lines[0]}" = 'Running task fail: false' ]
   [ "${lines[1]}" = '' ]
 }
 
 @test "run_all: command not found" {
-  run run_all inputs/Commandfile.empty
+  bats_require_minimum_version 1.5.0
+  run -127 run_all inputs/Commandfile.empty
   [ "$status" -eq 127 ]
 }
 
 @test "run_all: Commandfile not exist" {
-  run run_all inputs/Commandfile.notexist
+  bats_require_minimum_version 1.5.0
+  run -2 run_all inputs/Commandfile.notexist
   [ "$status" -eq 2 ]
   [ "${lines[0]}" = '' ]
 }
