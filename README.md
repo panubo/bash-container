@@ -16,8 +16,8 @@ The main functions require `bash`, `curl` and `coreutils`. These take about 10M 
 ```Dockerfile
 # Install bash-container functions
 RUN set -x \
-  && BASHCONTAINER_VERSION=0.7.2 \
-  && BASHCONTAINER_SHA256=87c4b804f0323d8f0856cb4fbf2f7859174765eccc8b0ac2d99b767cecdcf5c6 \
+  && BASHCONTAINER_VERSION=0.8.0 \
+  && BASHCONTAINER_SHA256=0ddc93b11fd8d6ac67f6aefbe4ba790550fc98444e051e461330f10371a877f1 \
   && if ! command -v wget > /dev/null; then \
       fetchDeps="${fetchDeps} wget"; \
      fi \
@@ -40,8 +40,8 @@ RUN set -x \
 ```Dockerfile
 # Install bash-container functions
 RUN set -x \
-  && BASHCONTAINER_VERSION=0.7.2 \
-  && BASHCONTAINER_SHA256=87c4b804f0323d8f0856cb4fbf2f7859174765eccc8b0ac2d99b767cecdcf5c6 \
+  && BASHCONTAINER_VERSION=0.8.0 \
+  && BASHCONTAINER_SHA256=0ddc93b11fd8d6ac67f6aefbe4ba790550fc98444e051e461330f10371a877f1 \
   && if [ -n "$(readlink /usr/bin/wget)" ]; then \
       fetchDeps="${fetchDeps} wget"; \
      fi \
