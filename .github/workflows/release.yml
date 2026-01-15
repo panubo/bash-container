@@ -12,7 +12,7 @@ jobs:
     steps:
 
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -22,12 +22,8 @@ jobs:
       - name: Get Release Notes
         id: get_release_notes
         run: |
-          NOTES=$(git log --pretty=format:%s $(git tag --sort=-refname | head -1)...$(git tag --sort=-refname | head -2 | tail -1) | awk '{ print "-", $0  }')
-          NOTES="${NOTES//'%'/'%25'}"
-          NOTES="${NOTES//$'\n'/'%0A'}"
-          NOTES="${NOTES//$'\r'/'%0D'}"
-          echo "NOTES: ${NOTES}"
-          echo "::set-output name=notes::${NOTES}"
+          NOTES=$(git log --pretty=format:%s $(git tag --sort=-v:refname | head -1)...$(git tag --sort=-v:refname | head -2 | tail -1) | awk '{ print "-", $0  }')
+          printf "notes<<EOF\\n%s\\nEOF\\n" "${NOTES}" >> "$GITHUB_OUTPUT"
 
       - name: Get Package SHA
         id: get_package_sha
@@ -51,8 +47,9 @@ jobs:
 
             -----
             SHA256: ${{ steps.get_package_sha.outputs.sha }}
-          draft: true
+          draft: false
           prerelease: false
+
 
       - name: Upload Release Asset
         id: upload-release-asset
