@@ -7,6 +7,74 @@ Common container Bash functions used for handling Docker image entrypoint semant
 
 All functions are [Bats](https://github.com/bats-core/bats-core) tested and checked against [ShellCheck](https://github.com/koalaman/shellcheck).
 
+## Table of Contents
+
+- [Core Concepts](#core-concepts)
+- [Functions](#functions)
+  - [Process Management](#process-management)
+  - [Service Waiting](#service-waiting)
+  - [File Handling](#file-handling)
+  - [Miscellaneous](#miscellaneous)
+- [Install](#install)
+- [Example Usage](#example-usage)
+- [Bash Strict Mode](#bash-strict-mode)
+- [License](#license)
+- [Status](#status)
+
+## Core Concepts
+
+This collection of Bash functions simplifies the creation of robust Docker entrypoint scripts. The main goals are:
+
+- **Service-awareness**: Wait for dependent services like databases or message queues to be available before starting the main application.
+- **Dynamic configuration**: Use environment variables to render configuration files at runtime.
+- **Process management**: Manage application processes using `Procfile`-like mechanics.
+- **Filesystem setup**: Handle the mounting of data volumes and template files.
+
+## Functions
+
+### Process Management
+
+| Function                                | Description                                                                    | Usage                               |
+| --------------------------------------- | ------------------------------------------------------------------------------ | ----------------------------------- |
+| `execute <PROCFILE> <COMMAND>`          | Executes a command from a Procfile. Returns 127 if the command is not found.   | `execute Procfile web`              |
+| `exec_procfile <COMMAND>`               | A wrapper for `execute` that uses `Procfile` by default.                         | `exec_procfile web`                 |
+| `run_all [PROCFILE]`                    | Runs all commands in a Procfile.                                               | `run_all` or `run_all Deployfile`   |
+| `run_commands <PROCFILE> <COMMANDS...>` | Runs one or more specified commands from a Procfile.                           | `run_commands Procfile web worker`  |
+| `run_deployfile`                        | Alias for `run_all Deployfile`.                                                | `run_deployfile`                    |
+| `run_procfile`                          | Alias for `run_all Procfile`.                                                  | `run_procfile`                      |
+| `run_procfile_commands`                 | Alias for `run_commands Procfile`.                                             | `run_procfile_commands web`         |
+| `run_deployfile_commands`               | Alias for `run_commands Deployfile`.                                           | `run_deployfile_commands task`      |
+
+### Service Waiting
+
+| Function                                        | Description                                                          | Usage                                     |
+| ----------------------------------------------- | -------------------------------------------------------------------- | ----------------------------------------- |
+| `wait_http <URL> [TIMEOUT] [HTTP_TIMEOUT]`      | Waits for an HTTP service to become available.                       | `wait_http http://api:8080 60 5`          |
+| `wait_kubeapi [RETRIES]`                        | Waits for the Kubernetes API to be available. Requires `kubectl`.    | `wait_kubeapi 60`                         |
+| `wait_tcp <HOST> [PORT] [RETRIES] [TCP_TIMEOUT]`| Waits for a TCP port to be open.                                     | `wait_tcp db 5432`                        |
+| `wait_tcp_multi <HOSTS> [MIN] [PORT]...`        | Waits for a minimum number of hosts to have an open TCP port.        | `wait_tcp_multi redis1,redis2 2 6379`     |
+| `wait_mariadb <HOST> [PORT]...`                 | Alias for `wait_tcp` with port 3306.                                 | `wait_mariadb db`                         |
+| `wait_postgres <HOST> [PORT]...`                | Alias for `wait_tcp` with port 5432.                                 | `wait_postgres db`                        |
+| `wait_rabbitmq <HOST> [PORT]...`                | Alias for `wait_tcp` with port 5672.                                 | `wait_rabbitmq rabbit`                    |
+| `wait_redis <HOST> [PORT]...`                   | Alias for `wait_tcp` with port 6379.                                 | `wait_redis cache`                        |
+| `wait_multi_rabbitmq <HOSTS> [MIN] [PORT]`      | Alias for `wait_tcp_multi` with port 5672.                           | `wait_multi_rabbitmq rabbit1,rabbit2 1`   |
+| `wait_multi_redis <HOSTS> [MIN] [PORT]`         | Alias for `wait_tcp_multi` with port 6379.                           | `wait_multi_redis redis1,redis2 1`        |
+| `wait_multi_elasticsearch <HOSTS> [MIN] [PORT]` | Alias for `wait_tcp_multi` with port 9200.                           | `wait_multi_elasticsearch es1,es2 1`      |
+
+### File Handling
+
+| Function                              | Description                                            | Usage                                    |
+| ------------------------------------- | ------------------------------------------------------ | ---------------------------------------- |
+| `import_env <FILE>`                   | Sources an environment file and exports the variables. | `import_env /app/.env`                   |
+| `render_templates <FILES...>`         | Renders template files using `gomplate`.               | `render_templates /app/config.yaml.tmpl` |
+| `run_mountfile [MOUNTFILE] [DATADIR]` | Mounts directories based on a `Mountfile`.             | `run_mountfile`                          |
+
+### Miscellaneous
+
+| Function                  | Description                    | Usage                           |
+| ------------------------- | ------------------------------ | ------------------------------- |
+| `set_timezone [TIMEZONE]` | Sets the container's timezone. | `set_timezone America/New_York` |
+
 ## Install
 
 The main functions require `bash`, `curl` and `coreutils`. These take about 10M of space. The template function requires [gomplate](https://github.com/hairyhenderson/gomplate/).
@@ -69,8 +137,18 @@ set -e
 
 source /panubo-functions.sh
 
-# Wait for services
-wait_mariadb "${DB_HOST}" "${DB_PORT:-3306}"
+# Set the timezone
+set_timezone "${TZ}"
+
+# Wait for services to be available
+wait_postgres "${DB_HOST}" "${DB_PORT:-5432}"
+wait_redis "${REDIS_HOST}" "${REDIS_PORT:-6379}"
+
+# Render configuration templates
+render_templates /etc/my.cnf.tmpl
+
+# Import environment variables from a file
+import_env /app/.env
 
 # Mount data mounts (specifying an alternate mount point uid/gid)
 MOUNTFILE_MOUNT_UID=33
@@ -91,7 +169,6 @@ exec_procfile "$1"
 if [ "$?" -eq "127" ]; then
 	exec "${@}"
 fi
-
 ```
 
 ### Using gomplate templating
@@ -161,3 +238,11 @@ This will render `/foo.conf.tmpl` to `/foo.conf`.
 ## Bash Strict Mode
 
 Although we like [Unofficial Bash Strict Mode](http://redsymbol.net/articles/unofficial-bash-strict-mode/) not all of these functions currently work under strict mode.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## Status
+
+Stable and used in production.
