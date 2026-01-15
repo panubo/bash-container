@@ -18,4 +18,4 @@ trap finish EXIT
 
 # Run all bats tests
 pushd tests 1> /dev/null
-bats ${1:-*}.bats
+bats "${1:-*}".bats
