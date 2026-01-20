@@ -7,6 +7,12 @@ Common container Bash functions used for handling Docker image entrypoint semant
 
 All functions are [Bats](https://github.com/bats-core/bats-core) tested and checked against [ShellCheck](https://github.com/koalaman/shellcheck).
 
+<!-- BEGIN_TOP_PANUBO -->
+> [!IMPORTANT]
+> **Maintained by Panubo** — Cloud Native & SRE Consultants in Sydney.
+> [Work with us →](https://panubo.com.au)
+<!-- END_TOP_PANUBO -->
+
 ## Table of Contents
 
 - [Core Concepts](#core-concepts)
@@ -246,3 +252,20 @@ This project is licensed under the [MIT License](LICENSE).
 ## Status
 
 Stable and used in production.
+
+<!-- BEGIN_BOTTOM_PANUBO -->
+> [!IMPORTANT]
+> ## About Panubo
+>
+> This project is maintained by Panubo, a technology consultancy based in Sydney, Australia. We build reliable, scalable systems and help teams master the cloud-native ecosystem.
+>
+> We are available for hire to help with:
+>
+> * SRE & Operations: Improving system reliability and incident response.
+> * Platform Engineering: Building internal developer platforms that scale.
+> * Kubernetes: Cluster design, security auditing, and migrations.
+> * DevOps: Streamlining CI/CD pipelines and developer experience.
+> * [See our other services](https://panubo.com.au/services)
+>
+> Need a hand with your infrastructure? [Let’s have a chat](https://panubo.com.au/contact) or email us at team@panubo.com.
+<!-- END_BOTTOM_PANUBO -->
